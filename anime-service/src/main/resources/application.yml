@@ -1,0 +1,9 @@
+spring:
+  application:
+    name:
+      anime-service
+
+  output:
+    ansi:
+          enabled:
+            ALWAYS
