@@ -2,6 +2,8 @@ package academy.devdojo.controller;
 
 import academy.devdojo.domain.Producer;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,10 +33,11 @@ public class ProducerController {
     }
 
     @PostMapping
-    public Producer saveProducer(@RequestBody Producer producer) {
+    public ResponseEntity<Producer> saveProducer(@RequestBody Producer producer) {
         producer.setId(ThreadLocalRandom.current().nextLong(100000));
         Producer.getProducers().add(producer);
-        return producer;
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(producer);
     }
 
 
