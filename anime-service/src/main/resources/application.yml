@@ -5,5 +5,12 @@ spring:
 
   output:
     ansi:
-          enabled:
-            ALWAYS
+      enabled:
+        ALWAYS
+
+server:
+  servlet:
+    context-path: /
+
+
+
