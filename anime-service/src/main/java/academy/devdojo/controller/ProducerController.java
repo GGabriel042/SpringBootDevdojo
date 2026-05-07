@@ -19,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProducerController {
 
-    private static final ProducerMapper MAPPER = ProducerMapper.INSTANCE;
+    private final ProducerMapper mapper;
     private final ProducerService service;
 
     @GetMapping
@@ -27,7 +27,7 @@ public class ProducerController {
         log.debug("Request received to list all producers, param name {}", name);
 
         var producers = service.findAll(name);
-        var producerGetResponses = MAPPER.toProducerGetResponseList(producers);
+        var producerGetResponses = mapper.toProducerGetResponseList(producers);
 
         return ResponseEntity.ok(producerGetResponses);
     }
@@ -37,7 +37,7 @@ public class ProducerController {
         log.debug("Request to find producer by id {}", id);
 
         var producer = service.findByIdOrThrowNotFound(id);
-        var producerGetResponses = MAPPER.toProducerGetResponse(producer);
+        var producerGetResponses = mapper.toProducerGetResponse(producer);
 
         return ResponseEntity.ok(producerGetResponses);
 
@@ -46,9 +46,9 @@ public class ProducerController {
     @PostMapping
     public ResponseEntity<ProducerGetResponse> saveProducer(@RequestBody ProducerPostRequest producerPostRequest) {
 
-        var producer = MAPPER.toProducer(producerPostRequest);
+        var producer = mapper.toProducer(producerPostRequest);
         var producerSaved = service.save(producer);
-        var producerGetResponse = MAPPER.toProducerGetResponse(producerSaved);
+        var producerGetResponse = mapper.toProducerGetResponse(producerSaved);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(producerGetResponse);
     }
@@ -68,7 +68,7 @@ public class ProducerController {
     public ResponseEntity<Void> updateProducer(@RequestBody ProducerPutRequest request) {
         log.debug("Request to update producer {}", request);
 
-        var producerToUpdate = MAPPER.toProducer(request);
+        var producerToUpdate = mapper.toProducer(request);
         service.update(producerToUpdate);
 
 
