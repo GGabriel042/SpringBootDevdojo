@@ -21,20 +21,30 @@ public class ProducerController {
     private static final ProducerMapper MAPPER = ProducerMapper.INSTANCE;
 
     @GetMapping
-    public List<Producer> listAll(@RequestParam(required = false) String name) {
-        var producers = Producer.getProducers();
-        if (name == null) return producers;
+    public ResponseEntity<List<ProducerGetResponse>> listAll(@RequestParam(required = false) String name) {
+        log.debug("Request received to list all producers, param name {}", name);
 
-        return producers.stream().filter(producer -> producer.getName().equalsIgnoreCase(name)).toList();
+        var producers = Producer.getProducers();
+        var producerGetResponseList = MAPPER.toProducerGetResponseList(producers);
+        if (name == null) return ResponseEntity.ok(producerGetResponseList);
+
+        var response = producerGetResponseList.stream().filter(producer -> producer.getName().equalsIgnoreCase(name)).toList();
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public Producer findById(@PathVariable Long id) {
-        return Producer.getProducers()
+    public ResponseEntity<ProducerGetResponse> findById(@PathVariable Long id) {
+        log.debug("Request to find producer by id {}", id);
+
+        var response = Producer.getProducers()
                 .stream()
                 .filter(producer -> producer.getId().equals(id))
                 .findFirst()
+                .map(MAPPER::toProducerGetResponse)
                 .orElse(null);
+
+        return ResponseEntity.ok(response);
 
     }
 
