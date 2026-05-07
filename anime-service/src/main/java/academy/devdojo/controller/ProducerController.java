@@ -1,11 +1,14 @@
 package academy.devdojo.controller;
 
 import academy.devdojo.domain.Producer;
+import academy.devdojo.request.ProducerPostRequest;
+import academy.devdojo.response.ProducerGetResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -15,7 +18,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ProducerController {
 
     @GetMapping
-    public List<Producer> listAll(@RequestParam (required = false) String name) {
+    public List<Producer> listAll(@RequestParam(required = false) String name) {
         var producers = Producer.getProducers();
         if (name == null) return producers;
 
@@ -33,11 +36,22 @@ public class ProducerController {
     }
 
     @PostMapping
-    public ResponseEntity<Producer> saveProducer(@RequestBody Producer producer) {
-        producer.setId(ThreadLocalRandom.current().nextLong(100000));
+    public ResponseEntity<ProducerGetResponse> saveProducer(@RequestBody ProducerPostRequest producerPostRequest) {
+        var producer = Producer.builder()
+                .id(ThreadLocalRandom.current().nextLong(100000))
+                .name(producerPostRequest.getName())
+                .createdAt(LocalDateTime.now())
+                .build();
+
         Producer.getProducers().add(producer);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(producer);
+        var response = ProducerGetResponse.builder()
+                .id(producer.getId())
+                .name(producer.getName())
+                .createdAt(producer.getCreatedAt())
+                .build();
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
 
