@@ -2,11 +2,13 @@ package academy.devdojo.mapper;
 
 import academy.devdojo.domain.Producer;
 import academy.devdojo.request.ProducerPostRequest;
+import academy.devdojo.request.ProducerPutRequest;
 import academy.devdojo.response.ProducerGetResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -22,4 +24,6 @@ public interface ProducerMapper {
     ProducerGetResponse toProducerGetResponse(Producer producer);
 
     List<ProducerGetResponse> toProducerGetResponseList(List<Producer> producers);
+
+    Producer toProducer(ProducerPutRequest request, LocalDateTime createdAt);
 }
