@@ -1,9 +1,6 @@
 package academy.devdojo.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +9,10 @@ import java.util.List;
 @Setter
 @Builder
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Anime {
 
+    @EqualsAndHashCode.Include
     private Long id;
     private String name;
 
