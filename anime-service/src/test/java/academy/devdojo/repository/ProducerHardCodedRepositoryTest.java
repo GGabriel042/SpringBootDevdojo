@@ -90,4 +90,15 @@ class ProducerHardCodedRepositoryTest {
     }
 
 
+    @Test
+    @DisplayName("delete removes a producer")
+    void delete_RemovesProducer_WhenNameIsNull() {
+
+        var producerToDelete = producersList.getFirst();
+        repository.delete(producerToDelete);
+
+        var producers = repository.findAll();
+        Assertions.assertThat(producers).isNotEmpty().doesNotContain(producerToDelete);
+    }
+
 }
