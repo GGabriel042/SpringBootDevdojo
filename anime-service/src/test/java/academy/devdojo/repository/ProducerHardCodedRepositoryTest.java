@@ -51,4 +51,16 @@ class ProducerHardCodedRepositoryTest {
 
         Assertions.assertThat(producers).isPresent().contains(expectedProducer);
     }
+
+    @Test
+    @DisplayName("findByName returns a producer with given name")
+    void findByName_ReturnsAProducer_WhenSuccessful() {
+        var expectedProducer = producersList.getFirst();
+
+        var producers = repository.findByName(expectedProducer.getName());
+
+        Assertions.assertThat(producers).isNotNull().contains(expectedProducer);
+    }
+
+
 }
