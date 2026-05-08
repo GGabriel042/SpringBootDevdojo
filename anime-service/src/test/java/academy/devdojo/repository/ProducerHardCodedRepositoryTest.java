@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class ProducerHardCodedRepositoryTest {
@@ -53,8 +54,8 @@ class ProducerHardCodedRepositoryTest {
     }
 
     @Test
-    @DisplayName("findByName returns a producer with given name")
-    void findByName_ReturnsAProducer_WhenSuccessful() {
+    @DisplayName("findByName returns list with found object when name exists")
+    void findByName_ReturnsFoundProducerInList_WhenNameIsFound() {
         var expectedProducer = producersList.getFirst();
 
         var producers = repository.findByName(expectedProducer.getName());
@@ -70,5 +71,23 @@ class ProducerHardCodedRepositoryTest {
 
         Assertions.assertThat(producers).isNotNull().isEmpty();
     }
+
+
+    @Test
+    @DisplayName("save creates a producer")
+    void save_CreateAProducer_WhenSuccessful(){
+        var producerToSave = Producer.builder()
+                .id(99L)
+                .name("Mappa")
+                .createdAt(LocalDateTime.now()).build();
+
+        var producer = repository.save(producerToSave);
+
+        Assertions.assertThat(producer).isEqualTo(producerToSave).hasNoNullFieldsOrProperties();
+
+        var producerSavedOptional = repository.findById(producerToSave.getId());
+        Assertions.assertThat(producerSavedOptional).isPresent().contains(producerToSave);
+    }
+
 
 }
