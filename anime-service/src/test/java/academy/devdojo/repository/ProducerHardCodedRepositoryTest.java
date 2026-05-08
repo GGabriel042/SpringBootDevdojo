@@ -62,5 +62,13 @@ class ProducerHardCodedRepositoryTest {
         Assertions.assertThat(producers).isNotNull().contains(expectedProducer);
     }
 
+    @Test
+    @DisplayName("findByName returns empty lit when name is null")
+    void findByName_ReturnsEmptyList_WhenNameIsNull() {
+
+        var producers = repository.findByName(null);
+
+        Assertions.assertThat(producers).isNotNull().isEmpty();
+    }
 
 }
