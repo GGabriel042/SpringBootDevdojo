@@ -41,4 +41,14 @@ class ProducerHardCodedRepositoryTest {
         var producers = repository.findAll();
         Assertions.assertThat(producers).isNotNull().hasSize(producers.size());
     }
+
+    @Test
+    @DisplayName("findById returns a producer with given id")
+    void findById_ReturnsAProducer_WhenSuccessful() {
+        var expectedProducer = producersList.getFirst();
+
+        var producers = repository.findById(expectedProducer.getId());
+
+        Assertions.assertThat(producers).isPresent().contains(expectedProducer);
+    }
 }
