@@ -44,7 +44,7 @@ class AnimeHardCodedRepositoryTest {
 
     @Test
     @DisplayName("findById returns a anime with given id")
-    void findById() {
+    void findById_ReturnsAnime_WhenSuccessful() {
         var expectedAnime = animeList.getFirst();
 
         var anime = repository.findById(expectedAnime.getId());
@@ -53,7 +53,13 @@ class AnimeHardCodedRepositoryTest {
     }
 
     @Test
-    void findByName() {
+    @DisplayName("findByName returns list with found object when name exists")
+    void findByName_ReturnsFoundAnime_WhenNameIsFound() {
+        var expectedAnime = animeList.getFirst();
+
+        var anime = repository.findByName(expectedAnime.getName());
+
+        Assertions.assertThat(anime).isNotNull().contains(expectedAnime);
     }
 
     @Test
