@@ -2,9 +2,7 @@ package academy.devdojo.repository;
 
 import academy.devdojo.domain.Anime;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
@@ -17,6 +15,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class AnimeHardCodedRepositoryTest {
 
     @InjectMocks
@@ -37,6 +36,7 @@ class AnimeHardCodedRepositoryTest {
 
     @Test
     @DisplayName("findAll returns a list with all animes")
+    @Order(1)
     void findAll_ReturnsAllAnime_WhenSuccessful() {
         var animes = repository.findAll();
         Assertions.assertThat(animes).isNotNull().hasSameElementsAs(animeList);
@@ -44,6 +44,7 @@ class AnimeHardCodedRepositoryTest {
 
     @Test
     @DisplayName("findById returns a anime with given id")
+    @Order(2)
     void findById_ReturnsAnime_WhenSuccessful() {
         var expectedAnime = animeList.getFirst();
 
@@ -54,6 +55,7 @@ class AnimeHardCodedRepositoryTest {
 
     @Test
     @DisplayName("findByName returns list with found object when name exists")
+    @Order(3)
     void findByName_ReturnsFoundAnime_WhenNameIsFound() {
         var expectedAnime = animeList.getFirst();
 
@@ -64,6 +66,7 @@ class AnimeHardCodedRepositoryTest {
 
     @Test
     @DisplayName("findByName returns empty list when name is null")
+    @Order(4)
     void findByName_ReturnsEmptyList_WhenIsNull() {
 
         var anime = repository.findByName(null);
@@ -73,6 +76,7 @@ class AnimeHardCodedRepositoryTest {
 
     @Test
     @DisplayName("save creates a anime")
+    @Order(5)
     void save_CreateAnime_WhenSuccessful() {
         var animeToSave = Anime.builder().id(99L).name("Digimon").build();
 
@@ -85,6 +89,7 @@ class AnimeHardCodedRepositoryTest {
 
     @Test
     @DisplayName("delete removes a anime")
+    @Order(6)
     void delete_RemoveAnime_WhenSuccessful() {
         var animeToDelete = animeList.getFirst();
 
@@ -97,6 +102,7 @@ class AnimeHardCodedRepositoryTest {
 
     @Test
     @DisplayName("update updates a anime")
+    @Order(7)
     void update_UpdateAnime_WhenSuccessful() {
         var animeToUpdate = animeList.getFirst();
         animeToUpdate.setName("Digimon");
