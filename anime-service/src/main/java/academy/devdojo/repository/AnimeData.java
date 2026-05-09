@@ -8,16 +8,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-@Getter
 public class AnimeData {
 
-    private  final List<Anime> animes = new ArrayList<>();
+    private final List<Anime> animes = new ArrayList<>();
+
      {
-        var Fullmetal = new Anime(1L, "Fullmetal");
-        var Cavaleiros = new Anime(2L, "Cavaleiros");
-        var DragonBall = new Anime(3L, "DragonBall");
+        var Fullmetal = Anime.builder().id(1L).name("Fullmetal").build();
+        var Cavaleiros = Anime.builder().id(2L).name("Cavaleiros").build();
+        var DragonBall =Anime.builder().id(3L).name("DragonBall").build();
         animes.addAll(List.of(Fullmetal, Cavaleiros, DragonBall));
     }
 
-
+    public List<Anime> getAnimes() {
+        return animes;
+    }
 }
