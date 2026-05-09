@@ -101,4 +101,21 @@ class ProducerHardCodedRepositoryTest {
         Assertions.assertThat(producers).isNotEmpty().doesNotContain(producerToDelete);
     }
 
+
+    @Test
+    @DisplayName("update updates a producer")
+    void update_UpdateAProducer_WhenSuccessful(){
+        var producerToUpdate = producersList.getFirst();
+        producerToUpdate.setName("Aniplex");
+
+        repository.update(producerToUpdate);
+
+        Assertions.assertThat(this.producersList).contains(producerToUpdate);
+
+        var producerUpdatedOptional = repository.findById(producerToUpdate.getId());
+        Assertions.assertThat(producerUpdatedOptional).isPresent();
+        Assertions.assertThat(producerUpdatedOptional.get().getName()).isEqualTo(producerToUpdate.getName());
+
+    }
+
 }
