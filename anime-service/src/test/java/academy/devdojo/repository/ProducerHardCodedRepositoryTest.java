@@ -14,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class ProducerHardCodedRepositoryTest {
@@ -75,7 +74,7 @@ class ProducerHardCodedRepositoryTest {
 
     @Test
     @DisplayName("save creates a producer")
-    void save_CreateAProducer_WhenSuccessful(){
+    void save_CreateAProducer_WhenSuccessful() {
         var producerToSave = Producer.builder()
                 .id(99L)
                 .name("Mappa")
@@ -104,7 +103,7 @@ class ProducerHardCodedRepositoryTest {
 
     @Test
     @DisplayName("update updates a producer")
-    void update_UpdateAProducer_WhenSuccessful(){
+    void update_UpdateAProducer_WhenSuccessful() {
         var producerToUpdate = producersList.getFirst();
         producerToUpdate.setName("Aniplex");
 
