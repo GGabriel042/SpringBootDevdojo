@@ -43,7 +43,13 @@ class AnimeHardCodedRepositoryTest {
     }
 
     @Test
+    @DisplayName("findById returns a anime with given id")
     void findById() {
+        var expectedAnime = animeList.getFirst();
+
+        var anime = repository.findById(expectedAnime.getId());
+
+        Assertions.assertThat(anime).isPresent().contains(expectedAnime);
     }
 
     @Test
