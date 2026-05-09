@@ -63,6 +63,15 @@ class AnimeHardCodedRepositoryTest {
     }
 
     @Test
+    @DisplayName("findByName returns empty list when name is null")
+    void findByName_ReturnsEmptyList_WhenIsNull() {
+
+        var anime = repository.findByName(null);
+
+        Assertions.assertThat(anime).isNotNull().isEmpty();
+    }
+
+    @Test
     void save() {
     }
 
