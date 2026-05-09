@@ -96,6 +96,18 @@ class AnimeHardCodedRepositoryTest {
     }
 
     @Test
-    void update() {
+    @DisplayName("update updates a anime")
+    void update_UpdateAnime_WhenSuccessful() {
+        var animeToUpdate = animeList.getFirst();
+        animeToUpdate.setName("Digimon");
+
+        repository.update(animeToUpdate);
+
+        var animes = repository.findAll();
+        Assertions.assertThat(animes).contains(animeToUpdate);
+
+        var animeUpdateOptional = repository.findById(animeToUpdate.getId());
+        Assertions.assertThat(animeUpdateOptional).isPresent();
+        Assertions.assertThat(animeUpdateOptional.get().getName()).isEqualTo(animeToUpdate.getName());
     }
 }
