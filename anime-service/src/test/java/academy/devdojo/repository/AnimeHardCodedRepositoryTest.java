@@ -83,9 +83,7 @@ class AnimeHardCodedRepositoryTest {
         Assertions.assertThat(animeOptionalSaved).isPresent().contains(animeToSave);
     }
 
-    @Test
-    void delete() {
-    }
+
 
     @Test
     void update() {
