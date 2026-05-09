@@ -83,7 +83,17 @@ class AnimeHardCodedRepositoryTest {
         Assertions.assertThat(animeOptionalSaved).isPresent().contains(animeToSave);
     }
 
+    @Test
+    @DisplayName("delete removes a anime")
+    void delete_RemoveAnime_WhenSuccessful() {
+        var animeToDelete = animeList.getFirst();
 
+        repository.delete(animeToDelete);
+
+        var animes = repository.findAll();
+        Assertions.assertThat(animes).isNotEmpty().doesNotContain(animeToDelete);
+
+    }
 
     @Test
     void update() {
