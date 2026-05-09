@@ -72,7 +72,15 @@ class AnimeHardCodedRepositoryTest {
     }
 
     @Test
-    void save() {
+    @DisplayName("save creates a anime")
+    void save_CreateAnime_WhenSuccessful() {
+        var animeToSave = Anime.builder().id(99L).name("Digimon").build();
+
+        var anime = repository.save(animeToSave);
+        Assertions.assertThat(anime).isEqualTo(animeToSave).hasNoNullFieldsOrProperties();
+
+        var animeOptionalSaved = repository.findById(animeToSave.getId());
+        Assertions.assertThat(animeOptionalSaved).isPresent().contains(animeToSave);
     }
 
     @Test
