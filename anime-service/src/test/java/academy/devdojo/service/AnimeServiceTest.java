@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,7 +47,16 @@ class AnimeServiceTest {
     }
 
     @Test
-    void findByIdOrThrowNotFound() {
+    @DisplayName("findAll returns list with found object when name exists")
+    @Order(2)
+    void findAll_ReturnsFoundProducerInList_WhenNameIsFound() {
+        var expectedAnime = animeList.getFirst();
+        List<Anime> animeListFound = Collections.singletonList(expectedAnime);
+
+        BDDMockito.when(repository.findByName(expectedAnime.getName())).thenReturn(animeListFound);
+
+        var animesFound = service.findAll(expectedAnime.getName());
+        Assertions.assertThat(animesFound).containsAll(animeListFound);
     }
 
     @Test
