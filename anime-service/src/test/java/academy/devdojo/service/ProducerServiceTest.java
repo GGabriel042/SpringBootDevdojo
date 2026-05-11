@@ -95,6 +95,21 @@ class ProducerServiceTest {
         Assertions.assertThatException()
                 .isThrownBy(() ->  service.findByIdOrThrowNotFound(expectedProducer.getId()))
                 .isInstanceOf(ResponseStatusException.class);
+    }
 
+    @Test
+    @DisplayName("save creates a producer")
+    @Order(5)
+    void save_CreateAProducer_WhenSuccessful() {
+        var producerToSave = Producer.builder()
+                .id(99L)
+                .name("Mappa")
+                .createdAt(LocalDateTime.now()).build();
+        
+        BDDMockito.when(repository.save(producerToSave)).thenReturn(producerToSave);
+
+        var savedProducer = service.save(producerToSave);
+
+        Assertions.assertThat(savedProducer).isEqualTo(producerToSave).hasNoNullFieldsOrProperties();
     }
 }
