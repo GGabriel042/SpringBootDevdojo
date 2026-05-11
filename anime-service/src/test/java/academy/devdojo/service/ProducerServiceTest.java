@@ -9,6 +9,7 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -82,5 +83,18 @@ class ProducerServiceTest {
 
         var producers = service.findByIdOrThrowNotFound(expectedProducer.getId());
         Assertions.assertThat(producers).isEqualTo(expectedProducer);
+    }
+
+    @Test
+    @DisplayName("findBtId throws ResponseStatusException when producer is not found")
+    @Order(5)
+    void findById_ThrowsResponseStatusException_WhenProducerIsNotFound() {
+        var expectedProducer = producersList.getFirst();
+        BDDMockito.when(repository.findById(expectedProducer.getId())).thenReturn(Optional.empty());
+
+        Assertions.assertThatException()
+                .isThrownBy(() ->  service.findByIdOrThrowNotFound(expectedProducer.getId()))
+                .isInstanceOf(ResponseStatusException.class);
+
     }
 }
