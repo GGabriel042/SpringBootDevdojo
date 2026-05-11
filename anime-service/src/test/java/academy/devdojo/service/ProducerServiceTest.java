@@ -120,6 +120,8 @@ class ProducerServiceTest {
         var producerToDelete = producersList.getFirst();
         BDDMockito.when(repository.findById(producerToDelete.getId())).thenReturn(Optional.of(producerToDelete));
 
+        BDDMockito.doNothing().when(repository).delete(producerToDelete);
+
         Assertions.assertThatNoException()
                 .isThrownBy(() -> service.delete(producerToDelete.getId()));
     }
