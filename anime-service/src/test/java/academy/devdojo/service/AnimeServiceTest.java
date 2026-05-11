@@ -9,6 +9,7 @@ import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,6 +85,14 @@ class AnimeServiceTest {
     }
 
     @Test
-    void update() {
+    @DisplayName("findBtId throws ResponseStatusException when producer is not found")
+    @Order(5)
+    void findById_ThrowsResponseStatusException_WhenProducerIsNotFound() {
+        var expectedAnime = animeList.getFirst();
+        BDDMockito.when(repository.findById(expectedAnime.getId())).thenReturn(Optional.empty());
+
+        Assertions.assertThatException()
+                .isThrownBy(() -> service.findByIdOrThrowNotFound(expectedAnime.getId()))
+                .isInstanceOf(ResponseStatusException.class);
     }
 }
