@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,7 +73,14 @@ class AnimeServiceTest {
     }
 
     @Test
-    void delete() {
+    @DisplayName("findById returns a producer with given id")
+    @Order(4)
+    void findById_ReturnsProducerById_WhenSuccessful() {
+        var expectedAnime = animeList.getFirst();
+        BDDMockito.when(repository.findById(expectedAnime.getId())).thenReturn(Optional.of(expectedAnime));
+
+        var animes = service.findByIdOrThrowNotFound(expectedAnime.getId());
+        Assertions.assertThat(animes).isEqualTo(expectedAnime);
     }
 
     @Test

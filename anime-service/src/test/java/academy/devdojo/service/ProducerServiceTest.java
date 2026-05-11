@@ -76,7 +76,7 @@ class ProducerServiceTest {
     }
 
     @Test
-    @DisplayName("findBtId returns a producer with given id")
+    @DisplayName("findById returns a producer with given id")
     @Order(4)
     void findById_ReturnsProducerById_WhenSuccessful() {
         var expectedProducer = producersList.getFirst();
