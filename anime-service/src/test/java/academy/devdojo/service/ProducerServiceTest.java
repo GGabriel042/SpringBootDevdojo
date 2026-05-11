@@ -125,4 +125,17 @@ class ProducerServiceTest {
         Assertions.assertThatNoException()
                 .isThrownBy(() -> service.delete(producerToDelete.getId()));
     }
+
+
+    @Test
+    @DisplayName("Delete throws ResponseStatusException when producer is not found")
+    @Order(8)
+    void delete_ThrowsResponseStatusException_WhenProducerIsNotFound() {
+        var producerToDelete = producersList.getFirst();
+        BDDMockito.when(repository.findById(producerToDelete.getId())).thenReturn(Optional.empty());
+
+        Assertions.assertThatException()
+                .isThrownBy(() ->  service.delete(producerToDelete.getId()))
+                .isInstanceOf(ResponseStatusException.class);
+    }
 }
