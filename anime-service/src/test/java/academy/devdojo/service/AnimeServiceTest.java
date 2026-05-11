@@ -95,4 +95,16 @@ class AnimeServiceTest {
                 .isThrownBy(() -> service.findByIdOrThrowNotFound(expectedAnime.getId()))
                 .isInstanceOf(ResponseStatusException.class);
     }
+
+    @Test
+    @DisplayName("save creates a producer")
+    @Order(5)
+    void save_CreateAProducer_WhenSuccessful() {
+        var animeToSave = Anime.builder().id(99L).name("Re Zero").build();
+        BDDMockito.when(repository.save(animeToSave)).thenReturn(animeToSave);
+
+        var savedAnime = service.save(animeToSave);
+        Assertions.assertThat(savedAnime).isEqualTo(animeToSave).hasNoNullFieldsOrProperties();
+
+    }
 }
