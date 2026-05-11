@@ -105,6 +105,18 @@ class AnimeServiceTest {
 
         var savedAnime = service.save(animeToSave);
         Assertions.assertThat(savedAnime).isEqualTo(animeToSave).hasNoNullFieldsOrProperties();
+    }
 
+
+    @Test
+    @DisplayName("Delete removes a producer")
+    @Order(6)
+    void delete_RemoveProducer_WhenSuccessful(){
+        var animeToDelete = animeList.getFirst();
+        BDDMockito.when(repository.findById(animeToDelete.getId())).thenReturn(Optional.of(animeToDelete));
+
+        BDDMockito.doNothing().when(repository).delete(animeToDelete);
+        Assertions.assertThatNoException()
+                .isThrownBy(() -> service.delete(animeToDelete.getId()));
     }
 }
