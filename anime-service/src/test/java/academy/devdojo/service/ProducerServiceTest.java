@@ -5,6 +5,7 @@ import academy.devdojo.repository.ProducerHardCodedRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -154,6 +155,19 @@ class ProducerServiceTest {
         service.update(producerToUpdate);
 
         Assertions.assertThatNoException().isThrownBy(() -> service.update(producerToUpdate));
+    }
 
+    @Test
+    @DisplayName("update throws ResponseStatusException when producer is not found")
+    @Order(9)
+    void update_ThrowsResponseStatusException_WhenProducerIsNotFound() {
+        var producerToUpdate = producersList.getFirst();
+
+        BDDMockito.when(repository.findById(ArgumentMatchers.anyLong()))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThatException()
+                .isThrownBy(() ->  service.update(producerToUpdate))
+                .isInstanceOf(ResponseStatusException.class);
     }
 }
