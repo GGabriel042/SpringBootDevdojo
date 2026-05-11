@@ -133,4 +133,22 @@ class AnimeServiceTest {
                 .isThrownBy(() -> service.delete(animeToDelete.getId()))
                 .isInstanceOf(ResponseStatusException.class);
     }
+
+    @Test
+    @DisplayName("update updates a producer")
+    @Order(8)
+    void update_UpdateAProducer_WhenSuccessful() {
+        var animeToUpdate = animeList.getFirst();
+        animeToUpdate.setName("Re Zero");
+
+        BDDMockito.when(repository.findById(animeToUpdate.getId()))
+                .thenReturn(Optional.of(animeToUpdate));
+        BDDMockito.doNothing().when(repository).update(animeToUpdate);
+
+        service.update(animeToUpdate);
+        Assertions.assertThatNoException()
+                .isThrownBy(() -> service.update(animeToUpdate));
+    }
+
+
 }
