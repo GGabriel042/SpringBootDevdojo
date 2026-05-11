@@ -63,7 +63,7 @@ class ProducerHardCodedRepositoryTest {
     }
 
     @Test
-    @DisplayName("findByName returns empty lit when name is null")
+    @DisplayName("findByName returns empty list when name is null")
     void findByName_ReturnsEmptyList_WhenNameIsNull() {
 
         var producers = repository.findByName(null);
