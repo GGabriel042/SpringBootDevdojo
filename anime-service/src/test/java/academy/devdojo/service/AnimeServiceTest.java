@@ -60,7 +60,15 @@ class AnimeServiceTest {
     }
 
     @Test
-    void save() {
+    @DisplayName("findAll returns empty list when name is not found")
+    @Order(3)
+    void findAll_ReturnsEmptyList_WhenNameIsNotFound() {
+        var name = "not-found";
+        BDDMockito.when(repository.findByName(name))
+                .thenReturn(Collections.emptyList());
+
+        var animes = service.findAll(name);
+        Assertions.assertThat(animes).isNotNull().isEmpty();
     }
 
     @Test
