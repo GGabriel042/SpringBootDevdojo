@@ -5,6 +5,7 @@ import academy.devdojo.repository.AnimeHardCodedRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -150,5 +151,16 @@ class AnimeServiceTest {
                 .isThrownBy(() -> service.update(animeToUpdate));
     }
 
+    @Test
+    @DisplayName("update throws ResponseStatusException when producer is not found")
+    @Order(9)
+    void update_ThrowsResponseStatusException_WhenProducerIsNotFound() {
+        var animeToUpdate = animeList.getFirst();
 
+        BDDMockito.when(repository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.empty());
+
+        Assertions.assertThatException()
+                .isThrownBy(() -> service.update(animeToUpdate))
+                .isInstanceOf(ResponseStatusException.class);
+    }
 }
