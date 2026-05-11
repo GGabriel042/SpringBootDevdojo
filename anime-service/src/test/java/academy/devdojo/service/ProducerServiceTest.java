@@ -112,4 +112,15 @@ class ProducerServiceTest {
 
         Assertions.assertThat(savedProducer).isEqualTo(producerToSave).hasNoNullFieldsOrProperties();
     }
+
+    @Test
+    @DisplayName("Delete removes a producer")
+    @Order(7)
+    void delete_RemoveProducer_WhenSuccessful() {
+        var producerToDelete = producersList.getFirst();
+        BDDMockito.when(repository.findById(producerToDelete.getId())).thenReturn(Optional.of(producerToDelete));
+
+        Assertions.assertThatNoException()
+                .isThrownBy(() -> service.delete(producerToDelete.getId()));
+    }
 }
