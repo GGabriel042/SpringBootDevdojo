@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -70,5 +71,16 @@ class ProducerServiceTest {
 
         var producers = service.findAll(name);
         Assertions.assertThat(producers).isNotNull().isEmpty();
+    }
+
+    @Test
+    @DisplayName("findBtId returns a producer with given id")
+    @Order(4)
+    void findById_ReturnsProducerById_WhenSuccessful() {
+        var expectedProducer = producersList.getFirst();
+        BDDMockito.when(repository.findById(expectedProducer.getId())).thenReturn(Optional.of(expectedProducer));
+
+        var producers = service.findByIdOrThrowNotFound(expectedProducer.getId());
+        Assertions.assertThat(producers).isEqualTo(expectedProducer);
     }
 }
