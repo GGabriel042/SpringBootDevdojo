@@ -39,9 +39,9 @@ class AnimeServiceTest {
     }
 
     @Test
-    @DisplayName("findAll returns a list with all producers when argument is null")
+    @DisplayName("findAll returns a list with all animes when argument is null")
     @Order(1)
-    void findAll_ReturnsAllProducers_WhenArgumentIsNull() {
+    void findAll_ReturnsAllAnimes_WhenArgumentIsNull() {
         BDDMockito.when(repository.findAll()).thenReturn(animeList);
 
         var animes = service.findAll(null);
@@ -52,7 +52,7 @@ class AnimeServiceTest {
     @Test
     @DisplayName("findAll returns list with found object when name exists")
     @Order(2)
-    void findAll_ReturnsFoundProducerInList_WhenNameIsFound() {
+    void findAll_ReturnsFoundAnimeInList_WhenNameIsFound() {
         var expectedAnime = animeList.getFirst();
         List<Anime> animeListFound = Collections.singletonList(expectedAnime);
 
@@ -75,9 +75,9 @@ class AnimeServiceTest {
     }
 
     @Test
-    @DisplayName("findById returns a producer with given id")
+    @DisplayName("findById returns a anime with given id")
     @Order(4)
-    void findById_ReturnsProducerById_WhenSuccessful() {
+    void findById_ReturnsAnimeById_WhenSuccessful() {
         var expectedAnime = animeList.getFirst();
         BDDMockito.when(repository.findById(expectedAnime.getId())).thenReturn(Optional.of(expectedAnime));
 
@@ -86,9 +86,9 @@ class AnimeServiceTest {
     }
 
     @Test
-    @DisplayName("findBtId throws ResponseStatusException when producer is not found")
+    @DisplayName("findBtId throws ResponseStatusException when anime is not found")
     @Order(5)
-    void findById_ThrowsResponseStatusException_WhenProducerIsNotFound() {
+    void findById_ThrowsResponseStatusException_WhenAnimeIsNotFound() {
         var expectedAnime = animeList.getFirst();
         BDDMockito.when(repository.findById(expectedAnime.getId())).thenReturn(Optional.empty());
 
@@ -98,9 +98,9 @@ class AnimeServiceTest {
     }
 
     @Test
-    @DisplayName("save creates a producer")
+    @DisplayName("save creates a anime")
     @Order(5)
-    void save_CreateAProducer_WhenSuccessful() {
+    void save_CreateAAnime_WhenSuccessful() {
         var animeToSave = Anime.builder().id(99L).name("Re Zero").build();
         BDDMockito.when(repository.save(animeToSave)).thenReturn(animeToSave);
 
@@ -110,9 +110,9 @@ class AnimeServiceTest {
 
 
     @Test
-    @DisplayName("Delete removes a producer")
+    @DisplayName("Delete removes a anime")
     @Order(6)
-    void delete_RemoveProducer_WhenSuccessful(){
+    void delete_RemoveAnime_WhenSuccessful(){
         var animeToDelete = animeList.getFirst();
         BDDMockito.when(repository.findById(animeToDelete.getId())).thenReturn(Optional.of(animeToDelete));
 
@@ -123,9 +123,9 @@ class AnimeServiceTest {
 
 
     @Test
-    @DisplayName("Delete throws ResponseStatusException when producer is not found")
+    @DisplayName("Delete throws ResponseStatusException when anime is not found")
     @Order(7)
-    void delete_ThrowsResponseStatusException_WhenProducerIsNotFound(){
+    void delete_ThrowsResponseStatusException_WhenAnimeIsNotFound(){
         var animeToDelete = animeList.getFirst();
         BDDMockito.when(repository.findById(animeToDelete.getId()))
                 .thenReturn(Optional.empty());
@@ -136,9 +136,9 @@ class AnimeServiceTest {
     }
 
     @Test
-    @DisplayName("update updates a producer")
+    @DisplayName("update updates a anime")
     @Order(8)
-    void update_UpdateAProducer_WhenSuccessful() {
+    void update_UpdateAAnime_WhenSuccessful() {
         var animeToUpdate = animeList.getFirst();
         animeToUpdate.setName("Re Zero");
 
@@ -152,9 +152,9 @@ class AnimeServiceTest {
     }
 
     @Test
-    @DisplayName("update throws ResponseStatusException when producer is not found")
+    @DisplayName("update throws ResponseStatusException when anime is not found")
     @Order(9)
-    void update_ThrowsResponseStatusException_WhenProducerIsNotFound() {
+    void update_ThrowsResponseStatusException_WhenAnimeIsNotFound() {
         var animeToUpdate = animeList.getFirst();
 
         BDDMockito.when(repository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.empty());
