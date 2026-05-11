@@ -119,4 +119,18 @@ class AnimeServiceTest {
         Assertions.assertThatNoException()
                 .isThrownBy(() -> service.delete(animeToDelete.getId()));
     }
+
+
+    @Test
+    @DisplayName("Delete throws ResponseStatusException when producer is not found")
+    @Order(7)
+    void delete_ThrowsResponseStatusException_WhenProducerIsNotFound(){
+        var animeToDelete = animeList.getFirst();
+        BDDMockito.when(repository.findById(animeToDelete.getId()))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThatException()
+                .isThrownBy(() -> service.delete(animeToDelete.getId()))
+                .isInstanceOf(ResponseStatusException.class);
+    }
 }
