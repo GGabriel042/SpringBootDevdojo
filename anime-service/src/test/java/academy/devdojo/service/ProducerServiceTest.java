@@ -59,4 +59,16 @@ class ProducerServiceTest {
         var producersFound = service.findAll(producer.getName());
         Assertions.assertThat(producersFound).containsAll(expectedProducersFound);
     }
+
+    @Test
+    @DisplayName("findAll returns empty list when name is not found")
+    @Order(3)
+    void findAll_ReturnsEmptyList_WhenNameIsNotFound() {
+        var name = "not-found";
+        BDDMockito.when(repository.findByName(name))
+                .thenReturn(Collections.emptyList());
+
+        var producers = service.findAll(name);
+        Assertions.assertThat(producers).isNotNull().isEmpty();
+    }
 }
