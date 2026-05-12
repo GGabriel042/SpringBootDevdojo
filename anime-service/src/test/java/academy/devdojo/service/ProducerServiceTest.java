@@ -87,7 +87,7 @@ class ProducerServiceTest {
     }
 
     @Test
-    @DisplayName("findBtId throws ResponseStatusException when producer is not found")
+    @DisplayName("findBYId throws ResponseStatusException when producer is not found")
     @Order(5)
     void findById_ThrowsResponseStatusException_WhenProducerIsNotFound() {
         var expectedProducer = producersList.getFirst();
