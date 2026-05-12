@@ -168,6 +168,22 @@ class ProducerControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
+    @Test
+    @DisplayName("PUT v1/producers throws ResponseStatusException when producer is not found")
+    @Order(8)
+    void update_ThrowsResponseStatusException_WhenProducerIsNotFound() throws Exception {
+        BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
+        var request = readResourceFile("producer/put-request-producer-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .put("/v1/producers")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
 
 
     private String readResourceFile(String fileName) throws IOException {
