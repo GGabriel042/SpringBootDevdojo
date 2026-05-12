@@ -1,11 +1,8 @@
 package academy.devdojo.controller;
 
 import academy.devdojo.domain.Producer;
-import academy.devdojo.mapper.ProducerMapperImpl;
 import academy.devdojo.repository.ProducerData;
 import academy.devdojo.repository.ProducerHardCodedRepository;
-import academy.devdojo.service.ProducerService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
@@ -14,14 +11,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,7 +24,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @WebMvcTest(controllers = ProducerController.class)
 @TestMethodOrder(MethodOrderer.class)
@@ -121,7 +115,7 @@ class ProducerControllerTest {
     @Test
     @DisplayName("GET v1/producers/99 throws ResponseStatusException 404 when producer is not found")
     @Order(5)
-    void findById_ThrowsResponseStatusException_WhenProducerIsNotFound() throws Exception{
+    void findById_ThrowsResponseStatusException_WhenProducerIsNotFound() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
         var id = 99L;
 
@@ -187,7 +181,7 @@ class ProducerControllerTest {
     @Test
     @DisplayName("DELETE v1/producer/1 removes a producer")
     @Order(9)
-    void delete_RemoveProducer_WhenSuccessful() throws Exception{
+    void delete_RemoveProducer_WhenSuccessful() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
         var id = producersList.getFirst().getId();
 
@@ -201,7 +195,7 @@ class ProducerControllerTest {
     @Test
     @DisplayName("DELETE v1/producer throws ResponseStatusException when producer is not found")
     @Order(10)
-    void delete_ThrowsResponseStatusException_WhenProducerIsNotFound() throws Exception{
+    void delete_ThrowsResponseStatusException_WhenProducerIsNotFound() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
         var id = 99L;
 
@@ -211,7 +205,6 @@ class ProducerControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
-
 
 
     private String readResourceFile(String fileName) throws IOException {
