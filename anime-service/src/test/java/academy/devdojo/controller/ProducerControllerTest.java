@@ -184,6 +184,23 @@ class ProducerControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @Test
+    @DisplayName("DELETE v1/producer/1 removes a producer")
+    @Order(9)
+    void delete_RemoveProducer_WhenSuccessful() throws Exception{
+        BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
+        var id = producersList.getFirst().getId();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/v1/producers/{id}", id)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+
+
+
 
 
     private String readResourceFile(String fileName) throws IOException {
