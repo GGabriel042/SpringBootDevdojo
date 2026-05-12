@@ -5,6 +5,7 @@ import academy.devdojo.mapper.ProducerMapperImpl;
 import academy.devdojo.repository.ProducerData;
 import academy.devdojo.repository.ProducerHardCodedRepository;
 import academy.devdojo.service.ProducerService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @WebMvcTest(controllers = ProducerController.class)
 @TestMethodOrder(MethodOrderer.class)
@@ -94,7 +97,26 @@ class ProducerControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
+    }
 
+    @Test
+    @DisplayName("GET v1/producers/1 returns a producer with given id")
+    @Order(4)
+    void findById_ReturnsProducerById_WhenSuccessful() throws Exception {
+        BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
+        var response = readResourceFile("producer/get-producer-by-id-200.json");
+        var id = 1L;
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/producers/{id}", id))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+    }
+
+    @Test
+    @DisplayName("findBtId throws ResponseStatusException when producer is not found")
+    @Order(5)
+    void findById_ThrowsResponseStatusException_WhenProducerIsNotFound() {
 
     }
 
