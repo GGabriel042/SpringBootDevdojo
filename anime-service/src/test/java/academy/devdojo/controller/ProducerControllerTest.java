@@ -52,9 +52,40 @@ class ProducerControllerTest {
     }
 
     @Test
-    @DisplayName("findAll returns a list with all producers when argument is null")
+    @DisplayName("GET v1/producers returns a list with all producers when argument is null")
     @Order(1)
     void findAll_ReturnsAllProducers_WhenArgumentIsNull() throws Exception {
+        BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
+        var response = readResourceFile("producer/get-producer-null-name-200.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/producers"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+
+
+    }
+
+    @Test
+    @DisplayName("GET v1/producers?name=Ufotable returns a list with found object when name exist")
+    @Order(2)
+    void findAll_ReturnsFoundProducerInList_WhenNameIsFound() throws Exception {
+        BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
+        var response = readResourceFile("producer/get-producer-ufotable-name-200.json");
+        var name = "Ufotable";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/producers").param("name", name))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+
+
+    }
+
+    @Test
+    @DisplayName("GET v1/producers?name=x returns empty list when name is not found")
+    @Order(3)
+    void findAll_ReturnsEmptyList_WhenNameIsNotFound() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
         var response = readResourceFile("producer/get-producer-null-name-200.json");
 
