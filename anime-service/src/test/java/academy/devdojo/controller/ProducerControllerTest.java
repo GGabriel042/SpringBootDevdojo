@@ -198,8 +198,19 @@ class ProducerControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
+    @Test
+    @DisplayName("DELETE v1/producer throws ResponseStatusException when producer is not found")
+    @Order(10)
+    void delete_ThrowsResponseStatusException_WhenProducerIsNotFound() throws Exception{
+        BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
+        var id = 99L;
 
-
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/v1/producers/{id}", id)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
 
 
 
