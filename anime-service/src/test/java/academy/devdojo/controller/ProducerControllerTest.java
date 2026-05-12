@@ -114,10 +114,15 @@ class ProducerControllerTest {
     }
 
     @Test
-    @DisplayName("findBtId throws ResponseStatusException when producer is not found")
+    @DisplayName("GET v1/producers/99 throws ResponseStatusException 404 when producer is not found")
     @Order(5)
-    void findById_ThrowsResponseStatusException_WhenProducerIsNotFound() {
+    void findById_ThrowsResponseStatusException_WhenProducerIsNotFound() throws Exception{
+        BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
+        var id = 99L;
 
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/producers/{id}", id))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     private String readResourceFile(String fileName) throws IOException {
