@@ -87,9 +87,10 @@ class ProducerControllerTest {
     @Order(3)
     void findAll_ReturnsEmptyList_WhenNameIsNotFound() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producersList);
-        var response = readResourceFile("producer/get-producer-null-name-200.json");
+        var response = readResourceFile("producer/get-producer-x-name-200.json");
+        var name = "x";
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/v1/producers"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/producers").param("name", name))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
