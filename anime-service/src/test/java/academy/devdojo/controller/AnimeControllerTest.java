@@ -1,0 +1,72 @@
+package academy.devdojo.controller;
+
+import academy.devdojo.domain.Anime;
+import academy.devdojo.repository.AnimeData;
+import academy.devdojo.repository.AnimeHardCodedRepository;
+import org.junit.jupiter.api.*;
+import org.mockito.BDDMockito;
+import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@WebMvcTest(controllers = AnimeController.class)
+@TestMethodOrder(MethodOrderer.class)
+@ComponentScan(basePackages = "academy.devdojo")
+class AnimeControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+    @MockBean
+    private AnimeData animeData;
+    @SpyBean
+    private AnimeHardCodedRepository repository;
+    private List<Anime> animeList;
+    @Autowired
+    private ResourceLoader resourceLoader;
+
+    @BeforeEach
+    void init() {
+        var steinsGate = Anime.builder().id(1L).name("Steins Gate").build();
+        var toradora = Anime.builder().id(2L).name("Toradora").build();
+        var pokemon = Anime.builder().id(3L).name("Pokemon").build();
+        animeList = new ArrayList<>(List.of(steinsGate, toradora, pokemon));
+    }
+
+
+    @Test
+    @DisplayName("GET v1/animes returns a list with all animes when argument is null")
+    @Order(1)
+    void findAll_ReturnsAllAnimes_WhenArgumentIsNull() throws Exception {
+        BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
+
+        var response = readResourceFile("anime/get-anime-null-name-200.json");
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/animes"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+    }
+
+
+
+
+    private String readResourceFile(String fileName) throws IOException {
+        var file = resourceLoader.getResource("classpath:%s".formatted(fileName)).getFile();
+        return new String(Files.readAllBytes(file.toPath()));
+    }
+}
