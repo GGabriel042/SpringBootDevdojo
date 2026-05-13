@@ -96,7 +96,7 @@ class AnimeControllerTest {
     void findById_ReturnsAnimeById_WhenSuccessful() throws Exception {
         BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
         var response = readResourceFile("anime/get-anime-by-id-200.json");
-        var id = animeList.getFirst().getId();
+        var id = 2L;
 
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/animes/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
