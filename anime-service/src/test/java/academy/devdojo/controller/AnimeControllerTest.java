@@ -120,9 +120,9 @@ class AnimeControllerTest {
     }
 
     @Test
-    @DisplayName("POST v1/producer creates a producer")
+    @DisplayName("POST v1/animes creates a anime")
     @Order(6)
-    void save_CreateAProducer_WhenSuccessful() throws Exception {
+    void save_CreateAnime_WhenSuccessful() throws Exception {
         var request = readResourceFile("anime/post-request-anime-200.json");
         var response = readResourceFile("anime/post-response-anime-201.json");
         var animeToBeSaved = Anime.builder().id(99L).name("Digimon").build();
@@ -140,6 +140,24 @@ class AnimeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.content().json(response));
     }
+
+    @Test
+    @DisplayName("PUT v1/animes updates a animes")
+    @Order(7)
+    void update_UpdateAnime_WhenSuccessful() throws Exception {
+        BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
+        var request = readResourceFile("anime/put-request-anime-200.json");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/v1/animes")
+                .content(request)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+
+    }
+
+
 
 
 
