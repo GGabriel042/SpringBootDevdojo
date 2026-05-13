@@ -1,5 +1,6 @@
 package academy.devdojo.repository;
 
+import academy.devdojo.commons.AnimeUtils;
 import academy.devdojo.domain.Anime;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -20,17 +21,16 @@ class AnimeHardCodedRepositoryTest {
 
     @InjectMocks
     private AnimeHardCodedRepository repository;
+    @InjectMocks
+    private AnimeUtils animeUtils;
 
     @Mock
     private AnimeData animeData;
-    private final List<Anime> animeList = new ArrayList<>();
+    private List<Anime> animeList;
 
     @BeforeEach
     void init() {
-        var steinsGate = Anime.builder().id(1L).name("Steins Gate").build();
-        var toradora = Anime.builder().id(2L).name("Toradora").build();
-        var pokemon = Anime.builder().id(3L).name("Pokemon").build();
-        animeList.addAll(List.of(steinsGate, toradora, pokemon));
+        animeList = animeUtils.newAnimeList();
         BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
     }
 
