@@ -157,6 +157,21 @@ class AnimeControllerTest {
 
     }
 
+    @Test
+    @DisplayName("PUT v1/animes throws ResponseStatusException when anime is not found")
+    @Order(8)
+    void update_ThrowsResponseStatusException_WhenAnimeIsNotFound() throws Exception {
+        BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
+        var request = readResourceFile("anime/put-request-anime-404.json");
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/v1/animes")
+                .content(request)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
 
 
 
