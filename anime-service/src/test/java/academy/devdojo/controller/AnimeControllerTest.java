@@ -105,6 +105,18 @@ class AnimeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
+    @Test
+    @DisplayName("GET v1/animes/99 throws ResponseStatusException 404 when anime is not found")
+    @Order(5)
+    void findById_ThrowsResponseStatusException_WhenAnimeIsNotFound() throws Exception {
+        BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
+        var id = 99L;
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/animes/{id}", id))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
 
 
 
