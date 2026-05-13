@@ -184,6 +184,18 @@ class AnimeControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
 
+    @Test
+    @DisplayName("DELETE v1/animes throws ResponseStatusException when anime is not found")
+    @Order(10)
+    void delete_ThrowsResponseStatusException_WhenAnimeIsNotFound() throws Exception {
+        BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
+        var id = (animeList.getLast().getId()) + 1;
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/v1/animes/{id}", id))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
 
 
 
