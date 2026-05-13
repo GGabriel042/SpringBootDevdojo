@@ -1,5 +1,6 @@
 package academy.devdojo.service;
 
+import academy.devdojo.commons.ProducerUtils;
 import academy.devdojo.domain.Producer;
 import academy.devdojo.repository.ProducerHardCodedRepository;
 import org.assertj.core.api.Assertions;
@@ -30,12 +31,12 @@ class ProducerServiceTest {
 
     private List<Producer> producersList;
 
+    @InjectMocks
+    private ProducerUtils producerUtils;
+
     @BeforeEach
     void init() {
-        var ufotable = Producer.builder().id(1L).name("ufotable").createdAt(LocalDateTime.now()).build();
-        var witStudio = Producer.builder().id(2L).name("witStudio").createdAt(LocalDateTime.now()).build();
-        var studioGhibli = Producer.builder().id(3L).name("studioGhibli").createdAt(LocalDateTime.now()).build();
-        producersList = new ArrayList<>(List.of(ufotable, witStudio, studioGhibli));
+        producersList = producerUtils.newProducerList();
     }
 
     @Test
