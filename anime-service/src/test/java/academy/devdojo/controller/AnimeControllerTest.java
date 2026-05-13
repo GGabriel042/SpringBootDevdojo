@@ -172,6 +172,18 @@ class AnimeControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
+    @Test
+    @DisplayName("DELETE v1/animes/1 removes a anime")
+    @Order(9)
+    void delete_RemoveAnime_WhenSuccessful() throws Exception {
+        BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
+        var id = animeList.getFirst().getId();
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/v1/animes/{id}", id))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
 
 
 
