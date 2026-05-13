@@ -1,6 +1,7 @@
 package academy.devdojo.controller;
 
 import academy.devdojo.commons.FileUtils;
+import academy.devdojo.commons.ProducerUtils;
 import academy.devdojo.domain.Producer;
 import academy.devdojo.repository.ProducerData;
 import academy.devdojo.repository.ProducerHardCodedRepository;
@@ -39,17 +40,12 @@ class ProducerControllerTest {
     private List<Producer> producersList;
     @Autowired
     private FileUtils fileUtils;
+    @Autowired
+    private ProducerUtils producerUtils;
 
     @BeforeEach
     void init() {
-        var dateTime = "2026-05-12T18:14:01.764901";
-        var formatted = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
-        var localDateTime = LocalDateTime.parse(dateTime, formatted);
-
-        var ufotable = Producer.builder().id(1L).name("ufotable").createdAt(localDateTime).build();
-        var witStudio = Producer.builder().id(2L).name("witStudio").createdAt(localDateTime).build();
-        var studioGhibli = Producer.builder().id(3L).name("studioGhibli").createdAt(localDateTime).build();
-        producersList = new ArrayList<>(List.of(ufotable, witStudio, studioGhibli));
+        producersList = producerUtils.newProducerList();
     }
 
     @Test
