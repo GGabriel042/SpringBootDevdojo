@@ -91,7 +91,7 @@ class AnimeControllerTest {
     }
 
     @Test
-    @DisplayName("GET v1/animes/2 returns a producer with given id")
+    @DisplayName("GET v1/animes/2 returns a anime with given id")
     @Order(4)
     void findById_ReturnsAnimeById_WhenSuccessful() throws Exception {
         BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
