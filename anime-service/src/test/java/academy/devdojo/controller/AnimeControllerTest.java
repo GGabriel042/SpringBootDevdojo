@@ -112,7 +112,7 @@ class AnimeControllerTest {
     @Order(5)
     void findById_ThrowsResponseStatusException_WhenAnimeIsNotFound() throws Exception {
         BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
-        var id = 99L;
+        var id = (animeList.getLast().getId()) + 1;
 
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/animes/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
