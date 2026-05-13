@@ -75,8 +75,22 @@ class AnimeControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
-
     }
+
+    @Test
+    @DisplayName("GET v1/animes?name=x returns empty list when name is not found")
+    @Order(3)
+    void findAll_ReturnsEmptyList_WhenNameIsNotFound() throws Exception {
+        BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
+        var response = readResourceFile("anime/get-anime-x-name-200.json");
+        var name = "x";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/animes").param("name", name))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+    }
+
 
 
 
