@@ -4,6 +4,7 @@ import academy.devdojo.domain.Anime;
 import academy.devdojo.repository.AnimeData;
 import academy.devdojo.repository.AnimeHardCodedRepository;
 import org.junit.jupiter.api.*;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -115,6 +117,28 @@ class AnimeControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/v1/animes/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("POST v1/producer creates a producer")
+    @Order(6)
+    void save_CreateAProducer_WhenSuccessful() throws Exception {
+        var request = readResourceFile("anime/post-request-anime-200.json");
+        var response = readResourceFile("anime/post-response-anime-201.json");
+        var animeToBeSaved = Anime.builder().id(99L).name("Digimon").build();
+
+        BDDMockito.when(repository.save(ArgumentMatchers.any())).thenReturn(animeToBeSaved);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/v1/animes")
+                        .content(request)
+                        .header("x-api-key", "v1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
 
