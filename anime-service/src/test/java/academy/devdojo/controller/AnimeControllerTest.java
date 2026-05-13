@@ -62,6 +62,22 @@ class AnimeControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
+    @Test
+    @DisplayName("GET v1/animes?name=Toradora returns a list with found object when name exist")
+    @Order(2)
+    void findAll_ReturnsFoundAnimesInList_WhenNameIsFound() throws Exception {
+        BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
+
+        var response = readResourceFile("anime/get-anime-toradora-name-200.json");
+        var name = "Toradora";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/v1/animes").param("name", name))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+
+    }
+
 
 
 
