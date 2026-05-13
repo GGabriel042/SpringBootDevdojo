@@ -6,7 +6,6 @@ import academy.devdojo.repository.AnimeHardCodedRepository;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,8 +22,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @WebMvcTest(controllers = AnimeController.class)
 @TestMethodOrder(MethodOrderer.class)
@@ -149,9 +146,9 @@ class AnimeControllerTest {
         var request = readResourceFile("anime/put-request-anime-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/v1/animes")
-                .content(request)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .put("/v1/animes")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
 
@@ -165,9 +162,9 @@ class AnimeControllerTest {
         var request = readResourceFile("anime/put-request-anime-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders
-                .put("/v1/animes")
-                .content(request)
-                .contentType(MediaType.APPLICATION_JSON))
+                        .put("/v1/animes")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -195,10 +192,6 @@ class AnimeControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
-
-
-
-
 
 
     private String readResourceFile(String fileName) throws IOException {
