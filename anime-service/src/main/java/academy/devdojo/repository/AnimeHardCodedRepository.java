@@ -25,16 +25,16 @@ public class AnimeHardCodedRepository {
         return animeData.getAnimes().stream().filter(anime -> anime.getName().equalsIgnoreCase(name)).toList();
     }
 
-    public Anime save (Anime anime) {
+    public Anime save(Anime anime) {
         animeData.getAnimes().add(anime);
         return anime;
     }
 
-    public void delete (Anime anime) {
+    public void delete(Anime anime) {
         animeData.getAnimes().remove(anime);
     }
 
-    public void update (Anime anime) {
+    public void update(Anime anime) {
         delete(anime);
         save(anime);
     }

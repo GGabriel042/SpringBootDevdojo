@@ -11,8 +11,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @EnableConfigurationProperties(value = ConnectionConfigurationProperties.class)
 public class AnimeServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AnimeServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AnimeServiceApplication.class, args);
+    }
 
 }

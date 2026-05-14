@@ -24,11 +24,11 @@ public class ProducerService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producer not Found"));
     }
 
-    public Producer save (Producer producer) {
+    public Producer save(Producer producer) {
         return repository.save(producer);
     }
 
-    public void delete (Long id) {
+    public void delete(Long id) {
         var producer = findByIdOrThrowNotFound(id);
         repository.delete(producer);
     }

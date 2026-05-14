@@ -11,7 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class HelloController {
 
     @GetMapping
-    public String hi(){
+    public String hi() {
         return "Hello World";
     }
 

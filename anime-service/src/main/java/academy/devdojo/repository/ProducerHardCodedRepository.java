@@ -26,16 +26,16 @@ public class ProducerHardCodedRepository {
         return producerData.getProducers().stream().filter(producer -> producer.getName().equalsIgnoreCase(name)).toList();
     }
 
-    public Producer save (Producer producer) {
+    public Producer save(Producer producer) {
         producerData.getProducers().add(producer);
         return producer;
     }
 
-    public void delete (Producer producer) {
+    public void delete(Producer producer) {
         producerData.getProducers().remove(producer);
     }
 
-    public void update (Producer producer) {
+    public void update(Producer producer) {
         delete(producer);
         save(producer);
     }

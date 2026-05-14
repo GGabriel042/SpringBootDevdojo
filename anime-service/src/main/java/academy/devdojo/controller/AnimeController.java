@@ -24,7 +24,7 @@ public class AnimeController {
 
 
     @GetMapping
-    public ResponseEntity<List<AnimeGetResponse>> findAll(@RequestParam (required = false) String name) {
+    public ResponseEntity<List<AnimeGetResponse>> findAll(@RequestParam(required = false) String name) {
 
         log.debug("Request received to find all animes, param name {}", name);
 
