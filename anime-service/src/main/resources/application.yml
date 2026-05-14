@@ -10,6 +10,11 @@ spring:
     ansi:
       enabled: ALWAYS
 
+  datasource:
+    url: ${DB_URL:localhost}:${DB_PORT:3306}
+    username: ${LOCAL_USERNAME:root}
+    password: ${LOCAL_PASSWORD:root123}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 logging:
     level:
@@ -23,8 +28,4 @@ server:
       max: 20
   error:
     include-stacktrace: ON_PARAM
-
-
-
-
 
