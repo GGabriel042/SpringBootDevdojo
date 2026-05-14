@@ -54,7 +54,7 @@ class ProducerServiceTest {
     @Order(2)
     void findAll_ReturnsFoundProducerInList_WhenNameIsFound() {
         var producer = producersList.getFirst();
-        List<Producer> expectedProducersFound  = Collections.singletonList(producer);
+        List<Producer> expectedProducersFound = Collections.singletonList(producer);
 
         BDDMockito.when(repository.findByName(producer.getName()))
                 .thenReturn(expectedProducersFound);
@@ -94,7 +94,7 @@ class ProducerServiceTest {
         BDDMockito.when(repository.findById(expectedProducer.getId())).thenReturn(Optional.empty());
 
         Assertions.assertThatException()
-                .isThrownBy(() ->  service.findByIdOrThrowNotFound(expectedProducer.getId()))
+                .isThrownBy(() -> service.findByIdOrThrowNotFound(expectedProducer.getId()))
                 .isInstanceOf(ResponseStatusException.class);
     }
 
@@ -106,7 +106,7 @@ class ProducerServiceTest {
                 .id(99L)
                 .name("Mappa")
                 .createdAt(LocalDateTime.now()).build();
-        
+
         BDDMockito.when(repository.save(producerToSave)).thenReturn(producerToSave);
 
         var savedProducer = service.save(producerToSave);
@@ -136,7 +136,7 @@ class ProducerServiceTest {
         BDDMockito.when(repository.findById(producerToDelete.getId())).thenReturn(Optional.empty());
 
         Assertions.assertThatException()
-                .isThrownBy(() ->  service.delete(producerToDelete.getId()))
+                .isThrownBy(() -> service.delete(producerToDelete.getId()))
                 .isInstanceOf(ResponseStatusException.class);
     }
 
@@ -149,7 +149,7 @@ class ProducerServiceTest {
         producerToUpdate.setName("Aniplex");
 
         BDDMockito.when(repository.findById(producerToUpdate.getId()))
-                        .thenReturn(Optional.of(producerToUpdate));
+                .thenReturn(Optional.of(producerToUpdate));
         BDDMockito.doNothing().when(repository).update(producerToUpdate);
 
         service.update(producerToUpdate);
@@ -167,7 +167,7 @@ class ProducerServiceTest {
                 .thenReturn(Optional.empty());
 
         Assertions.assertThatException()
-                .isThrownBy(() ->  service.update(producerToUpdate))
+                .isThrownBy(() -> service.update(producerToUpdate))
                 .isInstanceOf(ResponseStatusException.class);
     }
 }

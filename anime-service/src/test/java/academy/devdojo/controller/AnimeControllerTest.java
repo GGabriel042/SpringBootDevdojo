@@ -16,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -43,7 +42,7 @@ class AnimeControllerTest {
     private static final String url = "/v1/animes";
     @Autowired
     private FileUtils fileUtils;
-    
+
     @BeforeEach
     void init() {
         animeList = animeUtils.newAnimeList();
@@ -101,7 +100,7 @@ class AnimeControllerTest {
         var response = fileUtils.readResourceFile("anime/get-anime-by-id-200.json");
         var id = 2L;
 
-        mockMvc.perform(MockMvcRequestBuilders.get(url+ "/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.get(url + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
@@ -195,5 +194,5 @@ class AnimeControllerTest {
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
-    
+
 }

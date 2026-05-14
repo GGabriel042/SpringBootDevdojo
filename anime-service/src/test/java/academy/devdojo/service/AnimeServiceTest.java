@@ -13,12 +13,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -112,7 +109,7 @@ class AnimeServiceTest {
     @Test
     @DisplayName("Delete removes a anime")
     @Order(6)
-    void delete_RemoveAnime_WhenSuccessful(){
+    void delete_RemoveAnime_WhenSuccessful() {
         var animeToDelete = animeList.getFirst();
         BDDMockito.when(repository.findById(animeToDelete.getId())).thenReturn(Optional.of(animeToDelete));
 
@@ -125,7 +122,7 @@ class AnimeServiceTest {
     @Test
     @DisplayName("Delete throws ResponseStatusException when anime is not found")
     @Order(7)
-    void delete_ThrowsResponseStatusException_WhenAnimeIsNotFound(){
+    void delete_ThrowsResponseStatusException_WhenAnimeIsNotFound() {
         var animeToDelete = animeList.getFirst();
         BDDMockito.when(repository.findById(animeToDelete.getId()))
                 .thenReturn(Optional.empty());
