@@ -3,7 +3,6 @@ package academy.devdojo.controller;
 import external.dependency.Connection;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ConnectionController {
 
-    private final Connection connectionMySql;
+    private final Connection connection;
 
 
     @GetMapping
     public ResponseEntity<Connection> getConnections() {
 
-        return ResponseEntity.ok(connectionMySql);
+        return ResponseEntity.ok(connection);
     }
 }
