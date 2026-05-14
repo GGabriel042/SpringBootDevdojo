@@ -8,11 +8,8 @@ spring:
 
   output:
     ansi:
-      enabled:
-        ALWAYS
-  web:
-    error:
-      include-stacktrace: ON_PARAM
+      enabled: ALWAYS
+
 
 logging:
     level:
@@ -24,6 +21,9 @@ server:
   tomcat:
     threads:
       max: 20
+  error:
+    include-stacktrace: ON_PARAM
+
 
 
 
