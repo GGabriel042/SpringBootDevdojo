@@ -36,9 +36,9 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("findAll returns a list with all animes when argument is null")
+    @DisplayName("findAll returns a list with all users when argument is null")
     @Order(1)
-    void findAll_ReturnsAllAnimes_WhenArgumentIsNull() {
+    void findAll_ReturnsAllUsers_WhenArgumentIsNull() {
         BDDMockito.when(repository.findAll()).thenReturn(userList);
 
         var users = service.findAll(null);
@@ -49,7 +49,7 @@ class UserServiceTest {
     @Test
     @DisplayName("findAll returns list with found object when name exists")
     @Order(2)
-    void findAll_ReturnsFoundAnimeInList_WhenNameIsFound() {
+    void findAll_ReturnsFoundUserInList_WhenNameIsFound() {
         var expectedUser = userList.getFirst();
         List<User> usersListFound = Collections.singletonList(expectedUser);
 
@@ -73,9 +73,9 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("findById returns a anime with given id")
+    @DisplayName("findById returns a user with given id")
     @Order(4)
-    void findById_ReturnsAnimeById_WhenSuccessful() {
+    void findById_ReturnsUserById_WhenSuccessful() {
         var expectedUser = userList.getFirst();
         var id = expectedUser.getId();
 
@@ -86,9 +86,9 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("findById throws ResponseStatusException when anime is not found")
+    @DisplayName("findById throws ResponseStatusException when user is not found")
     @Order(5)
-    void findById_ThrowsResponseStatusException_WhenAnimeIsNotFound() {
+    void findById_ThrowsResponseStatusException_WhenUserIsNotFound() {
         var expectedUser = userList.getLast();
         var nonExistentId = expectedUser.getId() + 1;
 
@@ -100,9 +100,9 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("save creates a anime")
+    @DisplayName("save creates a user")
     @Order(5)
-    void save_CreateAAnime_WhenSuccessful() {
+    void save_CreateAUser_WhenSuccessful() {
         var id = userList.getLast().getId() + 1;
         var userToBeSaved = User.builder().id(id).firstName("Rodolfo").lastName("Afonso").email("Rodolfonso@teste.com").build();
 
@@ -113,33 +113,35 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("Delete removes a anime")
+    @DisplayName("Delete removes a user")
     @Order(6)
-    void delete_RemoveAnime_WhenSuccessful() {
+    void delete_RemoveUser_WhenSuccessful() {
         var userToDelete = userList.getFirst();
         BDDMockito.when(repository.findById(userToDelete.getId())).thenReturn(Optional.of(userToDelete));
 
         BDDMockito.doNothing().when(repository).deleteUser(userToDelete);
-        Assertions.assertThatNoException().isThrownBy(() -> service.deleteUser(userToDelete.getId()));
+        Assertions.assertThatNoException()
+                .isThrownBy(() -> service.deleteUser(userToDelete.getId()));
     }
 
     @Test
-    @DisplayName("Delete throws ResponseStatusException when anime is not found")
+    @DisplayName("Delete throws ResponseStatusException when user is not found")
     @Order(7)
-    void delete_ThrowsResponseStatusException_WhenAnimeIsNotFound() {
+    void delete_ThrowsResponseStatusException_WhenUserIsNotFound() {
         var userToDelete = userList.getLast();
         var nonExistingId = userToDelete.getId() + 1;
 
         BDDMockito.when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
 
-        Assertions.assertThatException().isThrownBy(() -> service.deleteUser(nonExistingId))
+        Assertions.assertThatException()
+                .isThrownBy(() -> service.deleteUser(nonExistingId))
                 .isInstanceOf(ResponseStatusException.class);
     }
 
     @Test
-    @DisplayName("update updates a anime")
+    @DisplayName("update updates a user")
     @Order(8)
-    void update_UpdateAAnime_WhenSuccessful() {
+    void update_UpdateAUser_WhenSuccessful() {
         var userToBeUpdate = userList.getFirst();
         userToBeUpdate.setFirstName("Rodolfinho");
 
@@ -152,9 +154,9 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("update throws ResponseStatusException when anime is not found")
+    @DisplayName("update throws ResponseStatusException when user is not found")
     @Order(9)
-    void update_ThrowsResponseStatusException_WhenAnimeIsNotFound() {
+    void update_ThrowsResponseStatusException_WhenUserIsNotFound() {
         var userToBeUpdate = userList.getLast();
 
         BDDMockito.when(repository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.empty());
