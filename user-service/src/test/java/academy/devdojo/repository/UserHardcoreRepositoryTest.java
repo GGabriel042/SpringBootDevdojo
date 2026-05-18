@@ -32,17 +32,17 @@ class UserHardcoreRepositoryTest {
     }
 
     @Test
-    @DisplayName("findAll returns a list with all animes")
+    @DisplayName("findAll returns a list with all users")
     @Order(1)
-    void findAll_ReturnsAllAnime_WhenSuccessful() {
+    void findAll_ReturnsAllUser_WhenSuccessful() {
         var users = repository.findAll();
         Assertions.assertThat(users).isNotNull().hasSameElementsAs(userList);
     }
 
     @Test
-    @DisplayName("findById returns a anime with given id")
+    @DisplayName("findById returns a user with given id")
     @Order(2)
-    void findById_ReturnsAnime_WhenSuccessful() {
+    void findById_ReturnsUser_WhenSuccessful() {
         var expectedUser = userList.getFirst();
         var user = repository.findById(expectedUser.getId());
 
@@ -52,7 +52,7 @@ class UserHardcoreRepositoryTest {
     @Test
     @DisplayName("findByName returns list with found object when name exists")
     @Order(3)
-    void findByName_ReturnsFoundAnime_WhenNameIsFound() {
+    void findByName_ReturnsFoundUser_WhenNameIsFound() {
         var expectedUser = userList.getFirst();
         var user = repository.findByFirstName(expectedUser.getFirstName());
 
@@ -69,9 +69,9 @@ class UserHardcoreRepositoryTest {
     }
 
     @Test
-    @DisplayName("save creates a anime")
+    @DisplayName("save creates a user")
     @Order(5)
-    void save_CreateAnime_WhenSuccessful() {
+    void save_CreateUser_WhenSuccessful() {
         var id = userList.getLast().getId() + 1;
         var userToBeSaved = User.builder().id(id).firstName("Rodolfo").lastName("Afonso").email("Rodolfonso@teste.com").build();
 
@@ -83,9 +83,9 @@ class UserHardcoreRepositoryTest {
     }
 
     @Test
-    @DisplayName("delete removes a anime")
+    @DisplayName("delete removes a user")
     @Order(6)
-    void delete_RemoveAnime_WhenSuccessful() {
+    void delete_RemoveUser_WhenSuccessful() {
         var userToDelete = userList.getLast();
         repository.deleteUser(userToDelete);
 
@@ -95,9 +95,9 @@ class UserHardcoreRepositoryTest {
     }
 
     @Test
-    @DisplayName("update updates a anime")
+    @DisplayName("update updates a user")
     @Order(7)
-    void update_UpdateAnime_WhenSuccessful() {
+    void update_UpdateUser_WhenSuccessful() {
 
         var userToUpdate = userList.getFirst();
         userToUpdate.setFirstName("Rodolfo");
