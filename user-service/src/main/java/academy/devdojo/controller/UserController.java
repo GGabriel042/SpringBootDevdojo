@@ -1,6 +1,5 @@
 package academy.devdojo.controller;
 
-import academy.devdojo.domain.User;
 import academy.devdojo.mapper.UserMapper;
 import academy.devdojo.request.UserPostRequest;
 import academy.devdojo.request.UserPutRequest;
