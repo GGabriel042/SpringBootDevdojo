@@ -34,7 +34,7 @@ public class AnimeService {
     }
 
     public void update(Anime animeToUpdate) {
-        var anime = findByIdOrThrowNotFound(animeToUpdate.getId());
-        repository.update(anime);
+        findByIdOrThrowNotFound(animeToUpdate.getId());
+        repository.update(animeToUpdate);
     }
 }
