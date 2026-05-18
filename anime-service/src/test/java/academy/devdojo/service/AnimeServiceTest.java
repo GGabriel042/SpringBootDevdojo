@@ -83,7 +83,7 @@ class AnimeServiceTest {
     }
 
     @Test
-    @DisplayName("findBtId throws ResponseStatusException when anime is not found")
+    @DisplayName("findById throws ResponseStatusException when anime is not found")
     @Order(5)
     void findById_ThrowsResponseStatusException_WhenAnimeIsNotFound() {
         var expectedAnime = animeList.getFirst();
