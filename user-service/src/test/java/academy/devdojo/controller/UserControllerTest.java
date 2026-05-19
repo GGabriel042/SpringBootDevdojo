@@ -4,7 +4,7 @@ import academy.devdojo.commons.FileUtils;
 import academy.devdojo.commons.UserUtils;
 import academy.devdojo.domain.User;
 import academy.devdojo.repository.UserData;
-import academy.devdojo.repository.UserHardcoreRepository;
+import academy.devdojo.repository.UserHardCodedRepository;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
@@ -25,7 +25,7 @@ import java.util.List;
 
 @WebMvcTest(controllers = UserController.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ComponentScan(basePackages = "academy.devdojo")
+@ComponentScan(basePackages = {"academy.devdojo"})
 class UserControllerTest {
 
     @Autowired
@@ -33,13 +33,13 @@ class UserControllerTest {
     @MockBean
     private UserData userData;
     @SpyBean
-    private UserHardcoreRepository repository;
+    private UserHardCodedRepository repository;
     private List<User> userList;
     @Autowired
     private ResourceLoader resourceLoader;
     @InjectMocks
     private UserUtils userUtils;
-    private static final String url = "/v1/user";
+    private static final String url = "/v1/users";
     @Autowired
     private FileUtils fileUtils;
 
@@ -63,7 +63,7 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("GET v1/users?name=Toradora returns a list with found object when name exist")
+    @DisplayName("GET v1/users?name=Gabriel returns a list with found object when name exist")
     @Order(2)
     void findAll_ReturnsFoundUsersInList_WhenNameIsFound() throws Exception {
         var response = fileUtils.readResourceFile("user/get-user-gabriel-name-200.json");

@@ -2,7 +2,7 @@ package academy.devdojo.service;
 
 import academy.devdojo.commons.UserUtils;
 import academy.devdojo.domain.User;
-import academy.devdojo.repository.UserHardcoreRepository;
+import academy.devdojo.repository.UserHardCodedRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ class UserServiceTest {
     private UserUtils userUtils;
 
     @Mock
-    private UserHardcoreRepository repository;
+    private UserHardCodedRepository repository;
     private List<User> userList;
 
     @BeforeEach
@@ -101,7 +101,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("save creates a user")
-    @Order(5)
+    @Order(6)
     void save_CreateAUser_WhenSuccessful() {
         var id = userList.getLast().getId() + 1;
         var userToBeSaved = User.builder().id(id).firstName("Rodolfo").lastName("Afonso").email("Rodolfonso@teste.com").build();
@@ -114,7 +114,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("Delete removes a user")
-    @Order(6)
+    @Order(7)
     void delete_RemoveUser_WhenSuccessful() {
         var userToDelete = userList.getFirst();
         BDDMockito.when(repository.findById(userToDelete.getId())).thenReturn(Optional.of(userToDelete));
@@ -126,7 +126,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("Delete throws ResponseStatusException when user is not found")
-    @Order(7)
+    @Order(8)
     void delete_ThrowsResponseStatusException_WhenUserIsNotFound() {
         var userToDelete = userList.getLast();
         var nonExistingId = userToDelete.getId() + 1;
@@ -140,7 +140,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("update updates a user")
-    @Order(8)
+    @Order(9)
     void update_UpdateAUser_WhenSuccessful() {
         var userToBeUpdate = userList.getFirst();
         userToBeUpdate.setFirstName("Rodolfinho");
@@ -148,14 +148,12 @@ class UserServiceTest {
         BDDMockito.when(repository.findById(userToBeUpdate.getId())).thenReturn(Optional.of(userToBeUpdate));
         BDDMockito.doNothing().when(repository).updateUser(userToBeUpdate);
 
-        service.updateUser(userToBeUpdate);
-
         Assertions.assertThatNoException().isThrownBy(() -> service.updateUser(userToBeUpdate));
     }
 
     @Test
     @DisplayName("update throws ResponseStatusException when user is not found")
-    @Order(9)
+    @Order(10)
     void update_ThrowsResponseStatusException_WhenUserIsNotFound() {
         var userToBeUpdate = userList.getLast();
 

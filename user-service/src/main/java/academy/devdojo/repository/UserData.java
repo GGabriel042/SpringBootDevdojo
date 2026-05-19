@@ -9,7 +9,7 @@ import java.util.List;
 @Component
 public class UserData {
 
-    private final List<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>(3);
 
     {
         User gabriel = User.builder().id(1L).firstName("Gabriel").lastName("Gonzaga").email("GG@gmail.com").build();

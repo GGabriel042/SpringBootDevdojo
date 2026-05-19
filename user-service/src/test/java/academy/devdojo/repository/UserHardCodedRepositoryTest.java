@@ -14,10 +14,10 @@ import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class UserHardcoreRepositoryTest {
+class UserHardCodedRepositoryTest {
 
     @InjectMocks
-    private UserHardcoreRepository repository;
+    private UserHardCodedRepository repository;
     @InjectMocks
     private UserUtils userUtils;
 

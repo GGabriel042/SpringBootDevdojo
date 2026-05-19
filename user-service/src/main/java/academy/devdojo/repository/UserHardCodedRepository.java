@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class UserHardcoreRepository {
+public class UserHardCodedRepository {
 
     private final UserData userData;
 
