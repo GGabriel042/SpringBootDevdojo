@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
@@ -248,35 +249,42 @@ class UserControllerTest {
 
 
     private static Stream<Arguments> postUserBadRequestSource() {
-        var firstNameRequiredError = "The field 'firstName' is required";
-        var lastNameRequiredError = "The field 'lastName' is required";
-        var emailRequiredError = "The field 'email' is required";
-        var emailInvalidError = "The e-mail is not valid";
 
-        var allErrors = List.of(firstNameRequiredError, lastNameRequiredError, emailRequiredError);
-        var emailError = Collections.singletonList(emailInvalidError);
+        var allRequiredErros = allRequiredErros();
+        var emailRequiredError = invalidEmailErros();
 
         return Stream.of(
-                Arguments.of("post-request-user-empty-fields-400.json", allErrors),
-                Arguments.of("post-request-user-blank-fields-400.json", allErrors),
-                Arguments.of("post-request-user-invalid-email-400.json", emailError)
+                Arguments.of("post-request-user-empty-fields-400.json", allRequiredErros),
+                Arguments.of("post-request-user-blank-fields-400.json", allRequiredErros),
+                Arguments.of("post-request-user-null-fields-400.json", allRequiredErros),
+                Arguments.of("post-request-user-invalid-email-400.json", emailRequiredError)
         );
     }
 
 
     private static Stream<Arguments> putUserBadRequestSource() {
+
+        var allRequiredErrors = allRequiredErros();
+        allRequiredErrors.add("The field 'id' cannot be null");
+        var emailRequiredError = invalidEmailErros();
+
+        return Stream.of(
+                Arguments.of("put-request-user-empty-fields-400.json", allRequiredErrors),
+                Arguments.of("put-request-user-blank-fields-400.json", allRequiredErrors),
+                Arguments.of("put-request-user-null-fields-400.json", allRequiredErrors),
+                Arguments.of("put-request-user-invalid-email-400.json", emailRequiredError)
+        );
+    }
+
+    private static List<String> allRequiredErros(){
         var firstNameRequiredError = "The field 'firstName' is required";
         var lastNameRequiredError = "The field 'lastName' is required";
         var emailRequiredError = "The field 'email' is required";
+        return new ArrayList<>(List.of(firstNameRequiredError, lastNameRequiredError, emailRequiredError));
+    }
+
+    private static List<String> invalidEmailErros() {
         var emailInvalidError = "The e-mail is not valid";
-
-        var allErrors = List.of(firstNameRequiredError, lastNameRequiredError, emailRequiredError);
-        var emailError = Collections.singletonList(emailInvalidError);
-
-        return Stream.of(
-                Arguments.of("put-request-user-empty-fields-400.json", allErrors),
-                Arguments.of("put-request-user-blank-fields-400.json", allErrors),
-                Arguments.of("put-request-user-invalid-email-400.json", emailError)
-        );
+        return List.of(emailInvalidError);
     }
 }
