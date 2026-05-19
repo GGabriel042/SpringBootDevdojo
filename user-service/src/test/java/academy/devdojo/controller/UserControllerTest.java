@@ -5,6 +5,7 @@ import academy.devdojo.commons.UserUtils;
 import academy.devdojo.domain.User;
 import academy.devdojo.repository.UserData;
 import academy.devdojo.repository.UserHardCodedRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
@@ -186,5 +187,62 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete(url + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("POST v1/users returns bad request when fields are empty")
+    @Order(11)
+    void save_ReturnsBadRequest_WhenFieldsAreEmpty() throws Exception {
+        var request = fileUtils.readResourceFile("user/post-request-user-empty-fields-400.json");
+
+        var mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .post(url)
+                        .content(request)
+                        .header("x-api-key", "v1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        var resolvedException = mvcResult.getResolvedException();
+
+        Assertions.assertThat(resolvedException).isNotNull();
+
+        var firstNameError = "The field 'firstName' is required";
+        var lastNameError = "The field 'lastName' is required";
+        var emailError = "The field 'email' is required";
+
+        Assertions.assertThat(resolvedException.getMessage())
+                .contains(firstNameError, lastNameError, emailError);
+    }
+
+
+    @Test
+    @DisplayName("POST v1/users returns bad request when fields are blank")
+    @Order(12)
+    void save_ReturnsBadRequest_WhenFieldsAreBlank() throws Exception {
+        var request = fileUtils.readResourceFile("user/post-request-user-blank-fields-400.json");
+
+        var mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                        .post(url)
+                        .content(request)
+                        .header("x-api-key", "v1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        var resolvedException = mvcResult.getResolvedException();
+
+        Assertions.assertThat(resolvedException).isNotNull();
+
+        var firstNameError = "The field 'firstName' is required";
+        var lastNameError = "The field 'lastName' is required";
+        var emailError = "The field 'email' is required";
+
+        Assertions.assertThat(resolvedException.getMessage())
+                .contains(firstNameError, lastNameError, emailError);
     }
 }
