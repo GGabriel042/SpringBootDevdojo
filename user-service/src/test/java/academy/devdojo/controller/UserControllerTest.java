@@ -198,7 +198,7 @@ class UserControllerTest {
     @MethodSource("postUserBadRequestSource")
     @DisplayName("POST v1/users returns bad request when fields are empty")
     @Order(11)
-    void save_ReturnsBadRequest_WhenFieldsAreEmpty(String fileName, List<String> errors) throws Exception {
+    void save_ReturnsBadRequest_WhenFieldsAreInvalid(String fileName, List<String> errors) throws Exception {
         var request = fileUtils.readResourceFile("user/%s".formatted(fileName));
 
         var mvcResult = mockMvc.perform(MockMvcRequestBuilders
@@ -221,6 +221,30 @@ class UserControllerTest {
     }
 
 
+    @ParameterizedTest
+    @MethodSource("putUserBadRequestSource")
+    @DisplayName("PUT v1/users returns bad request when fields are empty")
+    @Order(12)
+    void update_ReturnsBadRequest_WhenFieldsAreInvalid(String fileName, List<String> erros)throws Exception{
+        var request = fileUtils.readResourceFile("user/%s".formatted(fileName));
+
+        var mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .put(url)
+                .content(request)
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andReturn();
+
+        var resolvedException = mvcResult.getResolvedException();
+
+        Assertions.assertThat(resolvedException).isNotNull();
+
+        Assertions.assertThat(resolvedException.getMessage()).contains(erros);
+    }
+
+
 
 
     private static Stream<Arguments> postUserBadRequestSource() {
@@ -236,6 +260,23 @@ class UserControllerTest {
                 Arguments.of("post-request-user-empty-fields-400.json", allErrors),
                 Arguments.of("post-request-user-blank-fields-400.json", allErrors),
                 Arguments.of("post-request-user-invalid-email-400.json", emailError)
+        );
+    }
+
+
+    private static Stream<Arguments> putUserBadRequestSource() {
+        var firstNameRequiredError = "The field 'firstName' is required";
+        var lastNameRequiredError = "The field 'lastName' is required";
+        var emailRequiredError = "The field 'email' is required";
+        var emailInvalidError = "The e-mail is not valid";
+
+        var allErrors = List.of(firstNameRequiredError, lastNameRequiredError, emailRequiredError);
+        var emailError = Collections.singletonList(emailInvalidError);
+
+        return Stream.of(
+                Arguments.of("put-request-user-empty-fields-400.json", allErrors),
+                Arguments.of("put-request-user-blank-fields-400.json", allErrors),
+                Arguments.of("put-request-user-invalid-email-400.json", emailError)
         );
     }
 }
