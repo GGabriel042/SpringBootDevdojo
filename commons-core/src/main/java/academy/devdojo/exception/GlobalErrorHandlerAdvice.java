@@ -10,7 +10,7 @@ public class GlobalErrorHandlerAdvice {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<DefaultErrorMessage> handleNotFoundException(NotFoundException e) {
-        var error = new DefaultErrorMessage(HttpStatus.NOT_FOUND.value(), e.getMessage());
+        var error = new DefaultErrorMessage(HttpStatus.NOT_FOUND.value(), e.getReason());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 }
