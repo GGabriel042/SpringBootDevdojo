@@ -26,7 +26,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -109,9 +108,9 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("GET v1/users/99 throws ResponseStatusException 404 when user is not found")
+    @DisplayName("GET v1/users/99 throws NotFoundException 404 when user is not found")
     @Order(5)
-    void findById_ThrowsResponseStatusException_WhenUserIsNotFound() throws Exception {
+    void findById_ThrowsNotFoundException_WhenUserIsNotFound() throws Exception {
         var id = userList.getLast().getId() + 1;
 
         mockMvc.perform(MockMvcRequestBuilders.get(url + "/{id}", id))
@@ -159,9 +158,9 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("PUT v1/users throws ResponseStatusException when user is not found")
+    @DisplayName("PUT v1/users throws NotFoundException when user is not found")
     @Order(8)
-    void update_ThrowsResponseStatusException_WhenUserIsNotFound() throws Exception {
+    void update_ThrowsNotFoundException_WhenUserIsNotFound() throws Exception {
         var request = fileUtils.readResourceFile("user/put-request-user-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -185,9 +184,9 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE v1/users throws ResponseStatusException when user is not found")
+    @DisplayName("DELETE v1/users throws NotFoundException when user is not found")
     @Order(10)
-    void delete_ThrowsResponseStatusException_WhenUserIsNotFound() throws Exception {
+    void delete_ThrowsNotFoundException_WhenUserIsNotFound() throws Exception {
         var id = userList.getLast().getId() + 1;
 
         mockMvc.perform(MockMvcRequestBuilders.delete(url + "/{id}", id))
