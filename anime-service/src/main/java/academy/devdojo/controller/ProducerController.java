@@ -5,6 +5,7 @@ import academy.devdojo.request.ProducerPostRequest;
 import academy.devdojo.request.ProducerPutRequest;
 import academy.devdojo.response.ProducerGetResponse;
 import academy.devdojo.service.ProducerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class ProducerController {
     }
 
     @PostMapping
-    public ResponseEntity<ProducerGetResponse> saveProducer(@RequestBody ProducerPostRequest producerPostRequest) {
+    public ResponseEntity<ProducerGetResponse> saveProducer(@RequestBody @Valid ProducerPostRequest producerPostRequest) {
 
         var producer = mapper.toProducer(producerPostRequest);
         var producerSaved = service.save(producer);
@@ -65,7 +66,7 @@ public class ProducerController {
 
 
     @PutMapping
-    public ResponseEntity<Void> updateProducer(@RequestBody ProducerPutRequest request) {
+    public ResponseEntity<Void> updateProducer(@RequestBody @Valid ProducerPutRequest request) {
         log.debug("Request to update producer {}", request);
 
         var producerToUpdate = mapper.toProducer(request);
