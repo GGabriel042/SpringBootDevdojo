@@ -2,7 +2,6 @@ package academy.devdojo.service;
 
 import academy.devdojo.domain.User;
 import academy.devdojo.exception.NotFoundException;
-import academy.devdojo.repository.UserHardCodedRepository;
 import academy.devdojo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,11 +12,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserHardCodedRepository repository;
-    private final UserRepository userRepository;
+    private final UserRepository repository;
 
-    public List<User> findAll(String name) {
-        return name == null ? userRepository.findAll() : repository.findByFirstName(name);
+    public List<User> findAll(String firstName) {
+        return firstName == null ? repository.findAll() : repository.findByFirstNameIgnoreCase(firstName);
     }
 
     public User findByIdOrThrowNotFound(Long id) {
@@ -25,17 +23,17 @@ public class UserService {
                 .orElseThrow(() -> new NotFoundException("User not found"));
     }
 
-    public User saveUser (User user) {
-        return repository.saveUser(user);
+    public User save (User user) {
+        return repository.save(user);
     }
 
-    public void deleteUser (Long id) {
+    public void delete (Long id) {
         var userToDelete = findByIdOrThrowNotFound(id);
-        repository.deleteUser(userToDelete);
+        repository.delete(userToDelete);
     }
 
-    public void updateUser (User userToUpdate) {
+    public void update (User userToUpdate) {
         findByIdOrThrowNotFound(userToUpdate.getId());
-        repository.updateUser(userToUpdate);
+        repository.save(userToUpdate);
     }
 }
