@@ -5,6 +5,7 @@ import academy.devdojo.commons.UserUtils;
 import academy.devdojo.domain.User;
 import academy.devdojo.repository.UserData;
 import academy.devdojo.repository.UserHardCodedRepository;
+import academy.devdojo.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -38,6 +39,8 @@ class UserControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private UserData userData;
+    @MockBean
+    private UserRepository userRepository;
     @SpyBean
     private UserHardCodedRepository repository;
     private List<User> userList;
