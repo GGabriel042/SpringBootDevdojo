@@ -1,4 +1,6 @@
 spring:
+  config:
+    import: optional:classpath:.env[.properties]
   application:
     name:
       user-service
@@ -11,10 +13,9 @@ spring:
       enabled: ALWAYS
 
   datasource:
-    url: ${DB_URL:localhost}:${DB_PORT:3306}
-    username: ${LOCAL_USERNAME:root}
-    password: ${LOCAL_PASSWORD:root123}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/user_service?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: ${ENV_ROOT_USER}
+    password: ${ENV_ROOT_PASSWORD}
 
 logging:
     level:
