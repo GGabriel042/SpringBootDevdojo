@@ -50,7 +50,7 @@ class UserHardCodedRepositoryTest {
     }
 
     @Test
-    @DisplayName("findByName returns list with found object when name exists")
+    @DisplayName("findByName returns list with found object when firstName exists")
     @Order(3)
     void findByName_ReturnsFoundUser_WhenNameIsFound() {
         var expectedUser = userList.getFirst();
@@ -60,7 +60,7 @@ class UserHardCodedRepositoryTest {
     }
 
     @Test
-    @DisplayName("findByName returns empty list when name is null")
+    @DisplayName("findByName returns empty list when firstName is null")
     @Order(4)
     void findByName_ReturnsEmptyList_WhenIsNull() {
         var user = repository.findByFirstName(null);
@@ -75,7 +75,7 @@ class UserHardCodedRepositoryTest {
         var id = userList.getLast().getId() + 1;
         var userToBeSaved = User.builder().id(id).firstName("Rodolfo").lastName("Afonso").email("Rodolfonso@teste.com").build();
 
-        var userSaved = repository.saveUser(userToBeSaved);
+        var userSaved = repository.save(userToBeSaved);
         Assertions.assertThat(userSaved).isEqualTo(userToBeSaved).hasNoNullFieldsOrProperties();
 
         var userOptionalSaved = repository.findById(id);
@@ -87,7 +87,7 @@ class UserHardCodedRepositoryTest {
     @Order(6)
     void delete_RemoveUser_WhenSuccessful() {
         var userToDelete = userList.getLast();
-        repository.deleteUser(userToDelete);
+        repository.delete(userToDelete);
 
         var users = repository.findAll();
 
@@ -102,7 +102,7 @@ class UserHardCodedRepositoryTest {
         var userToUpdate = userList.getFirst();
         userToUpdate.setFirstName("Rodolfo");
 
-        repository.updateUser(userToUpdate);
+        repository.update(userToUpdate);
 
         var users = repository.findAll();
         Assertions.assertThat(users).contains(userToUpdate);

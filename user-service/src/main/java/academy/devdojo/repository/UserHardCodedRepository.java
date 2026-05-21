@@ -21,22 +21,22 @@ public class UserHardCodedRepository {
         return userData.getUsers().stream().filter(user -> user.getId().equals(id)).findFirst();
     }
 
-    public List<User> findByFirstName(String name) {
-        return userData.getUsers().stream().filter(user -> user.getFirstName().equalsIgnoreCase(name)).toList();
+    public List<User> findByFirstName(String firstName) {
+        return userData.getUsers().stream().filter(user -> user.getFirstName().equalsIgnoreCase(firstName)).toList();
     }
 
-    public User saveUser(User user) {
+    public User save(User user) {
         userData.getUsers().add(user);
         return user;
     }
 
-    public void deleteUser(User user) {
+    public void delete(User user) {
         userData.getUsers().remove(user);
     }
 
-    public void updateUser(User user) {
+    public void update(User user) {
         System.out.println("Repositorio recebeu "+ user.getFirstName());
-        deleteUser(user);
-        saveUser(user);
+        delete(user);
+        save(user);
     }
 }
