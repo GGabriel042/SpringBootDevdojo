@@ -26,9 +26,9 @@ public class UserController {
 
 
     @GetMapping
-    public ResponseEntity<List<UserGetResponse>> findUser(@RequestParam (required = false) String name) {
+    public ResponseEntity<List<UserGetResponse>> findUser(@RequestParam (required = false) String firstName) {
 
-        var users = service.findAll(name);
+        var users = service.findAll(firstName);
         var userGetResponseList = mapper.toUserGetResponseList(users);
 
         return ResponseEntity.ok(userGetResponseList);
@@ -44,27 +44,27 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserPostResponse> saveUser(@RequestBody @Valid UserPostRequest request) {
+    public ResponseEntity<UserPostResponse> save(@RequestBody @Valid UserPostRequest request) {
 
         var user = mapper.toUser(request);
-        var userToBeSaved = service.saveUser(user);
+        var userToBeSaved = service.save(user);
         var userSaved = mapper.toUserPostResponse(userToBeSaved);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userSaved);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteUser (@PathVariable Long id) {
+    public ResponseEntity<Void> delete (@PathVariable Long id) {
 
-        service.deleteUser(id);
+        service.delete(id);
 
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateUser (@RequestBody @Valid UserPutRequest request) {
+    public ResponseEntity<Void> update (@RequestBody @Valid UserPutRequest request) {
         var user = mapper.toUser(request);
-        service.updateUser(user);
+        service.update(user);
 
         return ResponseEntity.noContent().build();
     }

@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -40,71 +41,74 @@ class UserControllerTest {
     @MockBean
     private UserData userData;
     @MockBean
-    private UserRepository userRepository;
-    @SpyBean
-    private UserHardCodedRepository repository;
+    private UserRepository repository;
     private List<User> userList;
     @Autowired
     private ResourceLoader resourceLoader;
-    @InjectMocks
+    @Autowired
     private UserUtils userUtils;
-    private static final String url = "/v1/users";
+    private static final String URL = "/v1/users";
     @Autowired
     private FileUtils fileUtils;
 
     @BeforeEach
     void init() {
         userList = userUtils.newUserList();
-        BDDMockito.when(userData.getUsers()).thenReturn(userList);
     }
 
     @Test
     @DisplayName("GET v1/users returns a list with all users when argument is null")
     @Order(1)
     void findAll_ReturnsAllUsers_WhenArgumentIsNull() throws Exception {
+        BDDMockito.when(repository.findAll()).thenReturn(userList);
+        var response = fileUtils.readResourceFile("user/get-user-null-first-name-200.json");
 
-        var response = fileUtils.readResourceFile("user/get-user-null-name-200.json");
-
-        mockMvc.perform(MockMvcRequestBuilders.get(url))
+        mockMvc.perform(MockMvcRequestBuilders.get(URL))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
     @Test
-    @DisplayName("GET v1/users?name=Gabriel returns a list with found object when name exist")
+    @DisplayName("GET v1/users?firstName=Gabriel returns list with found object when first name exists")
     @Order(2)
-    void findAll_ReturnsFoundUsersInList_WhenNameIsFound() throws Exception {
-        var response = fileUtils.readResourceFile("user/get-user-gabriel-name-200.json");
-        var name = "gabriel";
+    void findAll_ReturnsFoundUserInList_WhenFirstNameIsFound() throws Exception {
+        var response = fileUtils.readResourceFile("user/get-user-gabriel-first-name-200.json");
+        var firstName = "Gabriel";
+        var gabriel = userList.stream().filter(user -> user.getFirstName().equals(firstName)).findFirst().orElse(null);
 
-        mockMvc.perform(MockMvcRequestBuilders.get(url).param("name", name))
+        BDDMockito.when(repository.findByFirstNameIgnoreCase(firstName)).thenReturn(Collections.singletonList(gabriel));
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL).param("firstName", firstName))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
     @Test
-    @DisplayName("GET v1/users?name=x returns empty list when name is not found")
+    @DisplayName("GET v1/users?firstName=x returns empty list when first name is not found")
     @Order(3)
     void findAll_ReturnsEmptyList_WhenNameIsNotFound() throws Exception {
-        var response = fileUtils.readResourceFile("user/get-user-x-name-200.json");
-        var name = "x";
+        var response = fileUtils.readResourceFile("user/get-user-x-first-name-200.json");
+        var firstName = "x";
 
-        mockMvc.perform(MockMvcRequestBuilders.get(url).param("name", name))
+        mockMvc.perform(MockMvcRequestBuilders.get(URL).param("firstName", firstName))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
     @Test
-    @DisplayName("GET v1/users/2 returns a user with given id")
+    @DisplayName("GET v1/users/1 returns a user with given id")
     @Order(4)
     void findById_ReturnsUserById_WhenSuccessful() throws Exception {
         var response = fileUtils.readResourceFile("user/get-user-by-id-200.json");
         var id = userList.getFirst().getId();
+        var foundUser = userList.stream().filter(user -> user.getId().equals(id)).findFirst();
 
-        mockMvc.perform(MockMvcRequestBuilders.get(url+"/{id}", id))
+        BDDMockito.when(repository.findById(id)).thenReturn(foundUser);
+
+        mockMvc.perform(MockMvcRequestBuilders.get(URL+"/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(response));
@@ -116,7 +120,7 @@ class UserControllerTest {
     void findById_ThrowsNotFoundException_WhenUserIsNotFound() throws Exception {
         var id = userList.getLast().getId() + 1;
 
-        mockMvc.perform(MockMvcRequestBuilders.get(url + "/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -130,10 +134,10 @@ class UserControllerTest {
         var newId = userList.getLast().getId() + 1;
         var userToBeSaved = User.builder().id(newId).firstName("Rodolfo").lastName("Afonso").email("Rodolfonso@gmail.com").build();
 
-        BDDMockito.when(repository.saveUser(ArgumentMatchers.any())).thenReturn(userToBeSaved);
+        BDDMockito.when(repository.save(ArgumentMatchers.any())).thenReturn(userToBeSaved);
 
         mockMvc.perform(MockMvcRequestBuilders
-                    .post(url)
+                    .post(URL)
                     .content(request)
                     .header("x-api-key", "v1")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -150,9 +154,13 @@ class UserControllerTest {
     @Order(7)
     void update_UpdateUser_WhenSuccessful() throws Exception {
         var request = fileUtils.readResourceFile("user/put-request-user-200.json");
+        var id = userList.getFirst().getId();
+        var foundUser = userList.stream().filter(user -> user.getId().equals(id)).findFirst();
+
+        BDDMockito.when(repository.findById(id)).thenReturn(foundUser);
 
         mockMvc.perform(MockMvcRequestBuilders
-                .put(url)
+                .put(URL)
                 .content(request)
                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -167,7 +175,7 @@ class UserControllerTest {
         var request = fileUtils.readResourceFile("user/put-request-user-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put(url)
+                        .put(URL)
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -180,8 +188,10 @@ class UserControllerTest {
     @Order(9)
     void delete_RemoveUser_WhenSuccessful() throws Exception {
         var id = userList.getFirst().getId();
+        var foundUser = userList.stream().filter(user -> user.getId().equals(id)).findFirst();
+        BDDMockito.when(repository.findById(id)).thenReturn(foundUser);
 
-        mockMvc.perform(MockMvcRequestBuilders.delete(url + "/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }
@@ -192,7 +202,7 @@ class UserControllerTest {
     void delete_ThrowsNotFoundException_WhenUserIsNotFound() throws Exception {
         var id = userList.getLast().getId() + 1;
 
-        mockMvc.perform(MockMvcRequestBuilders.delete(url + "/{id}", id))
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
@@ -205,7 +215,7 @@ class UserControllerTest {
         var request = fileUtils.readResourceFile("user/%s".formatted(fileName));
 
         var mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post(url)
+                        .post(URL)
                         .content(request)
                         .header("x-api-key", "v1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -232,7 +242,7 @@ class UserControllerTest {
         var request = fileUtils.readResourceFile("user/%s".formatted(fileName));
 
         var mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                .put(url)
+                .put(URL)
                 .content(request)
                 .contentType(MediaType.APPLICATION_JSON)
         )
