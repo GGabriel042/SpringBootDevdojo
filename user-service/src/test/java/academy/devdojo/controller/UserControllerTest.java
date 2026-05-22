@@ -133,7 +133,6 @@ class UserControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                     .post(URL)
                     .content(request)
-                    .header("x-api-key", "v1")
                     .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
