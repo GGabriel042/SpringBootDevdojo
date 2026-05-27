@@ -1,4 +1,4 @@
-package academy.devdojo.repository;
+package academy.devdojo.producer;
 
 import academy.devdojo.commons.ProducerUtils;
 import academy.devdojo.domain.Producer;
