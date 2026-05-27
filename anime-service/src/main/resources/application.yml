@@ -1,7 +1,18 @@
 spring:
+  config:
+    import:
+      - optional:classpath:.env[.properties]
   application:
     name:
       anime-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/user_service?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
+    username: ${ENV_ROOT_USER:root}
+    password: ${ENV_ROOT_PASSWORD:root123}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
   threads:
     virtual:
       enabled: true
@@ -9,12 +20,6 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
-
-  datasource:
-    url: ${DB_URL:localhost}:${DB_PORT:3306}
-    username: ${LOCAL_USERNAME:root}
-    password: ${LOCAL_PASSWORD:root123}
-    driver-class-name: com.mysql.cj.jdbc.Driver
 
 logging:
     level:

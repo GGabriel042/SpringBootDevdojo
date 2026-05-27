@@ -1,5 +1,0 @@
-spring:
-  datasource:
-    url: localhost:999
-    username: mongo
-    password: mongo
