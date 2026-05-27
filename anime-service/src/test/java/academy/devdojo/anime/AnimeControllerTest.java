@@ -1,10 +1,8 @@
-package academy.devdojo.controller;
+package academy.devdojo.anime;
 
 import academy.devdojo.commons.AnimeUtils;
 import academy.devdojo.commons.FileUtils;
 import academy.devdojo.domain.Anime;
-import academy.devdojo.repository.AnimeData;
-import academy.devdojo.repository.AnimeHardCodedRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
@@ -38,8 +35,8 @@ class AnimeControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private AnimeData animeData;
-    @SpyBean
-    private AnimeHardCodedRepository repository;
+    @MockBean
+    private AnimeRepository repository;
     private List<Anime> animeList;
     @Autowired
     private ResourceLoader resourceLoader;

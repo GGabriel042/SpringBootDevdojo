@@ -1,4 +1,4 @@
-package academy.devdojo.repository;
+package academy.devdojo.anime;
 
 import academy.devdojo.domain.Anime;
 import org.springframework.data.jpa.repository.JpaRepository;

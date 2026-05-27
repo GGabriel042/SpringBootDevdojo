@@ -1,4 +1,4 @@
-package academy.devdojo.repository;
+package academy.devdojo.anime;
 
 import academy.devdojo.commons.AnimeUtils;
 import academy.devdojo.domain.Anime;
