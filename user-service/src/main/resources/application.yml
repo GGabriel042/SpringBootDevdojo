@@ -22,8 +22,8 @@ spring:
       ddl-auto: update
 
 logging:
-    level:
-      academy.devdojo: debug
+  level:
+    academy.devdojo: debug
 
 server:
   port: 8090
@@ -34,4 +34,3 @@ server:
       max: 20
   error:
     include-stacktrace: ON_PARAM
-

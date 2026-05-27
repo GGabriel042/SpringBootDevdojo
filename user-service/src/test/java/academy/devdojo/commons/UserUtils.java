@@ -15,4 +15,8 @@ public class UserUtils {
         User daniel = User.builder().id(3L).firstName("Daniel").lastName("Gonzaga").email("DG@gmail.com").build();
         return new ArrayList<>(List.of(gabriel, rafael, daniel));
     }
+
+    public User newUserToSave() {
+        return User.builder().id(4L).firstName("Rodolfo").lastName("Afonso").email("Rodolfonso@teste.com").build();
+    }
 }
