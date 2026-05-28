@@ -26,7 +26,7 @@ class AnimeServiceTest {
     private AnimeUtils animeUtils;
 
     @Mock
-    private AnimeHardCodedRepository repository;
+    private AnimeRepository repository;
     private List<Anime> animeList;
 
     @BeforeEach
@@ -140,7 +140,7 @@ class AnimeServiceTest {
 
         BDDMockito.when(repository.findById(animeToUpdate.getId()))
                 .thenReturn(Optional.of(animeToUpdate));
-        BDDMockito.doNothing().when(repository).update(animeToUpdate);
+        BDDMockito.when(repository.save(animeToUpdate)).thenReturn(animeToUpdate);
 
         service.update(animeToUpdate);
         Assertions.assertThatNoException()
