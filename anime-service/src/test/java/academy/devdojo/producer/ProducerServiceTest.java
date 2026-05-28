@@ -25,7 +25,7 @@ class ProducerServiceTest {
     private ProducerService service;
 
     @Mock
-    private ProducerHardCodedRepository repository;
+    private ProducerRepository repository;
 
     private List<Producer> producersList;
 
@@ -149,7 +149,7 @@ class ProducerServiceTest {
 
         BDDMockito.when(repository.findById(producerToUpdate.getId()))
                 .thenReturn(Optional.of(producerToUpdate));
-        BDDMockito.doNothing().when(repository).update(producerToUpdate);
+        BDDMockito.when(repository.save(producerToUpdate)).thenReturn(producerToUpdate);
 
         service.update(producerToUpdate);
 
