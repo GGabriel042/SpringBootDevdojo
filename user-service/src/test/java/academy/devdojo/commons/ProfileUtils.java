@@ -1,10 +1,12 @@
 package academy.devdojo.commons;
 
 import academy.devdojo.domain.Profile;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ProfileUtils {
 
     public List<Profile> newProfileList() {
