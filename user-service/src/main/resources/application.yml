@@ -24,6 +24,7 @@ spring:
 logging:
   level:
     academy.devdojo: debug
+    net.ttddyy.dsproxy.listener: debug
 
 server:
   port: 8090
