@@ -9,11 +9,12 @@
         <version>3.3.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>academy.devdojo</groupId>
     <artifactId>commons-core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Commons Core</name>
-    <description>Classes utilizadas em todos os microserviços</description>
+    <description>Classes utilizadas em todos os Microserviços</description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -27,5 +28,4 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
     </dependencies>
-
 </project>
