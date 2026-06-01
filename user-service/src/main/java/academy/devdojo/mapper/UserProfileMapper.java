@@ -16,4 +16,6 @@ import java.util.List;
 public interface UserProfileMapper {
 
     List<UserProfileGetResponse> toUserProfileGetResponse(List<UserProfile> userProfiles);
+
+    List<UserProfileGetResponse> toUserProfileGetResponseList (List<User> user);
 }

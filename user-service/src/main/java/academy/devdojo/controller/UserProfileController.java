@@ -28,12 +28,24 @@ public class UserProfileController {
     private final UserProfileMapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<UserProfileGetResponse>> findProfile() {
+    public ResponseEntity<List<UserProfileGetResponse>> findAll() {
+        log.debug("Request received to list all user profile");
 
         var userProfiles = service.findAll();
         var userProfileGetResponses = mapper.toUserProfileGetResponse(userProfiles);
 
         return ResponseEntity.ok(userProfileGetResponses);
+    }
+
+
+    @GetMapping("profiles/{id}")
+    public ResponseEntity<List<UserProfileGetResponse>> findAll(@PathVariable Long id) {
+        log.debug("Request received to list all user by profiles id '{}'", id);
+
+        var users = service.findAllUsersByProfileId(id);
+        var userProfileGetResponseList = mapper.toUserProfileGetResponseList(users);
+
+        return ResponseEntity.ok(userProfileGetResponseList);
     }
 
 }
