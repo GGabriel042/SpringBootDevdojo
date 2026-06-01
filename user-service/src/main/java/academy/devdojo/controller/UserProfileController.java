@@ -2,9 +2,11 @@ package academy.devdojo.controller;
 
 import academy.devdojo.domain.UserProfile;
 import academy.devdojo.mapper.ProfileMapper;
+import academy.devdojo.mapper.UserProfileMapper;
 import academy.devdojo.request.ProfilePostRequest;
 import academy.devdojo.response.ProfileGetResponse;
 import academy.devdojo.response.ProfilePostResponse;
+import academy.devdojo.response.UserProfileGetResponse;
 import academy.devdojo.service.ProfileService;
 import academy.devdojo.service.UserProfileService;
 import jakarta.validation.Valid;
@@ -23,14 +25,15 @@ import java.util.List;
 public class UserProfileController {
 
     private final UserProfileService service;
-
+    private final UserProfileMapper mapper;
 
     @GetMapping
-    public ResponseEntity<List<UserProfile>> findProfile() {
+    public ResponseEntity<List<UserProfileGetResponse>> findProfile() {
 
         var userProfiles = service.findAll();
+        var userProfileGetResponses = mapper.toUserProfileGetResponse(userProfiles);
 
-        return ResponseEntity.ok(userProfiles);
+        return ResponseEntity.ok(userProfileGetResponses);
     }
 
 }
