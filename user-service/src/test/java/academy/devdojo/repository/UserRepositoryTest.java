@@ -26,11 +26,11 @@ class UserRepositoryTest {
     @DisplayName("save creates a user")
     @Order(1)
     void save_CreateAUser_WhenSuccessful() {
-        var userToBeSaved = userUtils.newUserToSave();
-        var savedUser = repository.save(userToBeSaved);
+        var userToSave = userUtils.newUserToSave();
+        var savedUser = repository.save(userToSave);
 
         Assertions.assertThat(savedUser).hasNoNullFieldsOrProperties();
-        Assertions.assertThat(savedUser.getId()).isEqualTo(1);
+        Assertions.assertThat(savedUser.getId()).isEqualTo(userToSave.getId());
     }
 
     @Test
