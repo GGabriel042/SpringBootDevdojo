@@ -32,6 +32,6 @@ class UserProfileRepositoryTest {
                 .hasSize(2)
                 .doesNotContainNull();
 
-        users.forEach(user -> Assertions.assertThat(user.getId()).hasNoNullFieldsOrProperties());
+        users.forEach(user -> Assertions.assertThat(user).hasNoNullFieldsOrProperties());
     }
 }
