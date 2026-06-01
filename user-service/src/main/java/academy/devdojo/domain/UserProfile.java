@@ -11,6 +11,8 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
+@NamedEntityGraph(name = "UserProfile.fullDetails",
+        attributeNodes = {@NamedAttributeNode("user"), @NamedAttributeNode("profile")})
 public class UserProfile {
 
     @EqualsAndHashCode.Include
