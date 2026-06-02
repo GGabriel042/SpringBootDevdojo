@@ -1,1 +1,1 @@
-insert into "user" (email,first_name,last_name) values ('Rodolfonso@teste.com','Rodolfo','Afonso')
+insert into user (email,first_name,last_name) values ('Rodolfonso@teste.com','Rodolfo','Afonso')
