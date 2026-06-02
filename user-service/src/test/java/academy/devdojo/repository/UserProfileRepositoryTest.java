@@ -2,14 +2,12 @@ package academy.devdojo.repository;
 
 import academy.devdojo.commons.UserUtils;
 import academy.devdojo.config.IntegrationTestConfig;
-import academy.devdojo.config.TestcontainersConfiguration;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
@@ -26,7 +24,7 @@ class UserProfileRepositoryTest extends IntegrationTestConfig {
     @Test
     @DisplayName("findAll returns a list with all users by profile id")
     @Order(1)
-    @Sql("/sql/init_user_profile_2_users_1_profile.sql")
+    @Sql("/sql/user_profile/init_user_profile_2_users_1_profile.sql")
     void findAllUsersByProfileId_ReturnsAllUsersByProfileId_WhenSuccessful() {
         var profileId = 1L;
         var users = repository.findAllUsersByProfileId(profileId);

@@ -1,7 +1,7 @@
 package academy.devdojo.controller;
 
 import academy.devdojo.commons.FileUtils;
-import academy.devdojo.commons.ProfileUtils;
+import academy.devdojo.commons.UserUtils;
 import academy.devdojo.config.IntegrationTestConfig;
 import academy.devdojo.config.TestcontainersConfiguration;
 import io.restassured.RestAssured;
@@ -22,15 +22,13 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Import(TestcontainersConfiguration.class)
-public class ProfileControllerRestAssuredIT extends IntegrationTestConfig {
-    private static final String URL = "/v1/profiles";
+public class UserControllerRestAssuredIT extends IntegrationTestConfig {
+    private static final String URL = "/v1/users";
     @Autowired
-    private ProfileUtils profileUtils;
+    private UserUtils userUtils;
     @Autowired
     private FileUtils fileUtils;
     @LocalServerPort
@@ -43,31 +41,41 @@ public class ProfileControllerRestAssuredIT extends IntegrationTestConfig {
     }
 
     @Test
-    @DisplayName("GET v1/profiles returns a list with all profiles")
-    @Sql(value = "/sql/profile/init_two_profiles.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = "/sql/profile/clean_profiles.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @DisplayName("GET v1/users returns a list with all users")
+    @Sql(value = "/sql/user/init_three_user.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "/sql/user/clean_users.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Order(1)
-    void findAll_ReturnsAllProfiles_WhenSuccessful() throws Exception {
-        var response = fileUtils.readResourceFile("profile/get-profiles-200.json");
+    void findAll_ReturnsAllUsers_WhenSuccessful() throws Exception {
+        var response = fileUtils.readResourceFile("user/get-user-null-first-name-200.json");
 
-        RestAssured.given()
+        var expectedResponse = RestAssured.given()
                 .contentType(ContentType.JSON).accept(ContentType.JSON)
                 .when()
                 .get(URL)
                 .then()
                 .statusCode(HttpStatus.OK.value())
-                .body(Matchers.equalTo(response))
-                .log().all();
+                .log().all()
+                .extract().response().body().asString();
 
+        JsonAssertions.assertThatJson(response)
+                .and(users -> {
+                    users.node("[0].id").asNumber().isPositive();
+                    users.node("[1].id").asNumber().isPositive();
+                    users.node("[2].id").asNumber().isPositive();
+                });
+
+        JsonAssertions.assertThatJson(response)
+                .whenIgnoringPaths("[*].id")
+                .isEqualTo(expectedResponse);
     }
 
 
     @Test
-    @DisplayName("GET v1/profiles returns empty list when nothing is not found")
+    @DisplayName("GET v1/users returns empty list when nothing is not found")
     @Order(2)
     void findAll_ReturnsEmptyList_WhenNothingIsNotFound() {
 
-        var response = fileUtils.readResourceFile("profile/get-profiles-empty-list-200.json");
+        var response = fileUtils.readResourceFile("user/get-users-empty-list-200.json");
 
         RestAssured.given()
                 .contentType(ContentType.JSON).accept(ContentType.JSON)
@@ -81,11 +89,11 @@ public class ProfileControllerRestAssuredIT extends IntegrationTestConfig {
 
 
     @Test
-    @DisplayName("POST v1/profiles creates an profile")
+    @DisplayName("POST v1/users creates an user")
     @Order(3)
-    void save_CreatesProfile_WhenSuccessful() throws Exception {
-        var request = fileUtils.readResourceFile("profile/post-request-profile-200.json");
-        var expectedResponse = fileUtils.readResourceFile("profile/post-response-profile-201.json");
+    void save_CreatesUser_WhenSuccessful() throws Exception {
+        var request = fileUtils.readResourceFile("user/post-request-user-200.json");
+        var expectedResponse = fileUtils.readResourceFile("user/post-response-user-201.json");
 
         var response = RestAssured.given()
                 .contentType(ContentType.JSON).accept(ContentType.JSON)
@@ -109,12 +117,12 @@ public class ProfileControllerRestAssuredIT extends IntegrationTestConfig {
 
 
     @ParameterizedTest
-    @MethodSource("postProfileBadRequestSource")
-    @DisplayName("POST v1/profiles returns bad request when fields are invalid")
+    @MethodSource("postUserBadRequestSource")
+    @DisplayName("POST v1/users returns bad request when fields are invalid")
     @Order(4)
     void save_ReturnsBadRequest_WhenFieldsAreInvalid(String requestFile, String responseFile) throws Exception {
-        var request = fileUtils.readResourceFile("profile/%s".formatted(requestFile));
-        var expectedResponse = fileUtils.readResourceFile("profile/%s".formatted(responseFile));
+        var request = fileUtils.readResourceFile("user/%s".formatted(requestFile));
+        var expectedResponse = fileUtils.readResourceFile("user/%s".formatted(responseFile));
 
 
         var response = RestAssured.given()
@@ -134,12 +142,12 @@ public class ProfileControllerRestAssuredIT extends IntegrationTestConfig {
 
     }
 
-    private static Stream<Arguments> postProfileBadRequestSource() {
+    private static Stream<Arguments> postUserBadRequestSource() {
 
         return Stream.of(
-                Arguments.of("post-request-profile-empty-fields-400.json", "post-response-profile-empty-fields-400.json"),
-                Arguments.of("post-request-profile-null-fields-400.json", "post-response-profile-null-fields-400.json"),
-                Arguments.of("post-request-profile-blank-fields-400.json", "post-response-profile-blank-fields-400.json")
+                Arguments.of("post-request-user-empty-fields-400.json", "post-response-user-empty-fields-400.json"),
+                Arguments.of("post-request-user-null-fields-400.json", "post-response-user-null-fields-400.json"),
+                Arguments.of("post-request-user-blank-fields-400.json", "post-response-user-blank-fields-400.json")
         );
     }
 

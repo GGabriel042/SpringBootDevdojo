@@ -6,7 +6,6 @@ import academy.devdojo.config.IntegrationTestConfig;
 import academy.devdojo.config.TestcontainersConfiguration;
 import academy.devdojo.response.ProfileGetResponse;
 import academy.devdojo.response.ProfilePostResponse;
-import jakarta.transaction.Transactional;
 import net.javacrumbs.jsonunit.assertj.JsonAssertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -44,8 +43,8 @@ public class ProfileControllerIT extends IntegrationTestConfig {
 
     @Test
     @DisplayName("GET v1/profiles returns a list with all profiles")
-    @Sql(value = "/sql/init_two_profiles.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = "/sql/clean_profiles.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(value = "/sql/profile/init_two_profiles.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = "/sql/profile/clean_profiles.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Order(1)
     void findAll_ReturnsAllProfiles_WhenSuccessful() throws Exception {
         var typeReference = new ParameterizedTypeReference<List<ProfileGetResponse>>(){};

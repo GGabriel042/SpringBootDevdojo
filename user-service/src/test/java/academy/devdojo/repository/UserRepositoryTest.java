@@ -2,7 +2,6 @@ package academy.devdojo.repository;
 
 import academy.devdojo.commons.UserUtils;
 import academy.devdojo.config.IntegrationTestConfig;
-import academy.devdojo.config.TestcontainersConfiguration;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,7 @@ class UserRepositoryTest extends IntegrationTestConfig {
     @Test
     @DisplayName("findAll returns a list with all users when successful")
     @Order(2)
-    @Sql("/sql/init_one_user.sql")
+    @Sql("/sql/user/init_one_user.sql")
     void findAll_ReturnsAllUsers_WhenSuccessful() {
         var users = repository.findAll();
 
