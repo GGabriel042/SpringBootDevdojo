@@ -46,9 +46,9 @@ public class UserControllerRestAssuredIT extends IntegrationTestConfig {
     @Sql(value = "/sql/user/clean_users.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Order(1)
     void findAll_ReturnsAllUsers_WhenSuccessful() throws Exception {
-        var response = fileUtils.readResourceFile("user/get-user-null-first-name-200.json");
+        var expectedResponse = fileUtils.readResourceFile("user/get-user-null-first-name-200.json");
 
-        var expectedResponse = RestAssured.given()
+        var response = RestAssured.given()
                 .contentType(ContentType.JSON).accept(ContentType.JSON)
                 .when()
                 .get(URL)
