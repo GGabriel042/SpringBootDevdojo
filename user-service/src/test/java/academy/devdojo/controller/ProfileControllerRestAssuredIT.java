@@ -71,10 +71,6 @@ public class ProfileControllerRestAssuredIT extends IntegrationTestConfig {
                 .body(Matchers.equalTo(response))
                 .log().all();
 
-//        mockMvc.perform(MockMvcRequestBuilders.get(URL))
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
 
