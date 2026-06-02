@@ -166,6 +166,7 @@ public class UserControllerRestAssuredIT extends IntegrationTestConfig {
 
     @Test
     @DisplayName("POST v1/users creates an user")
+    @Sql(value = "/sql/user/clean_users.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Order(6)
     void save_CreatesUser_WhenSuccessful() throws Exception {
         var request = fileUtils.readResourceFile("user/post-request-user-200.json");
