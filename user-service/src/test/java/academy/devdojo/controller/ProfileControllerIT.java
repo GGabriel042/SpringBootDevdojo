@@ -2,6 +2,7 @@ package academy.devdojo.controller;
 
 import academy.devdojo.commons.FileUtils;
 import academy.devdojo.commons.ProfileUtils;
+import academy.devdojo.config.IntegrationTestConfig;
 import academy.devdojo.config.TestcontainersConfiguration;
 import academy.devdojo.response.ProfileGetResponse;
 import academy.devdojo.response.ProfilePostResponse;
@@ -33,7 +34,7 @@ import static org.springframework.http.HttpMethod.POST;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @Transactional
 @Import(TestcontainersConfiguration.class)
-public class ProfileControllerIT {
+public class ProfileControllerIT extends IntegrationTestConfig {
     private static final String URL = "/v1/profiles";
     @Autowired
     private TestRestTemplate testRestTemplate;
