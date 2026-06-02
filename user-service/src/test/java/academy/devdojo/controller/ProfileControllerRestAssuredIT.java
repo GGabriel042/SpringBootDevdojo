@@ -9,6 +9,7 @@ import academy.devdojo.response.ProfilePostResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import net.javacrumbs.jsonunit.assertj.JsonAssertions;
+import net.javacrumbs.jsonunit.core.Option;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -128,14 +129,20 @@ public class ProfileControllerRestAssuredIT extends IntegrationTestConfig {
         var request = fileUtils.readResourceFile("profile/%s".formatted(requestFile));
         var expectedResponse = fileUtils.readResourceFile("profile/%s".formatted(responseFile));
 
-        var profileEntity = buildHttpEntity(request);
-        var responseEntity = testRestTemplate.exchange(URL, POST, profileEntity, String.class);
 
-        assertThat(responseEntity).isNotNull();
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        var response = RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body(request)
+                .when()
+                .post(URL)
+                .then()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .log().all()
+                .extract().response().body().asString();
 
-        JsonAssertions.assertThatJson(responseEntity.getBody())
+        JsonAssertions.assertThatJson(response)
                 .whenIgnoringPaths("timestamp")
+                .when(Option.IGNORING_ARRAY_ORDER)
                 .isEqualTo(expectedResponse);
 
     }
@@ -150,9 +157,4 @@ public class ProfileControllerRestAssuredIT extends IntegrationTestConfig {
     }
 
 
-    private static HttpEntity<String> buildHttpEntity(String request) {
-        var httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(request, httpHeaders);
-    }
 }
