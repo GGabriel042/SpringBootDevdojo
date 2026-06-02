@@ -97,12 +97,26 @@ public class ProfileControllerRestAssuredIT extends IntegrationTestConfig {
     @Order(3)
     void save_CreatesProfile_WhenSuccessful() throws Exception {
         var request = fileUtils.readResourceFile("profile/post-request-profile-200.json");
-        var profileEntity = buildHttpEntity(request);
-        var responseEntity = testRestTemplate.exchange(URL, POST, profileEntity, ProfilePostResponse.class);
+        var expectedResponse = fileUtils.readResourceFile("profile/post-response-profile-201.json");
 
-        assertThat(responseEntity).isNotNull();
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        assertThat(responseEntity.getBody()).isNotNull().hasNoNullFieldsOrProperties();
+        var response = RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .body(request)
+                .when()
+                .post(URL)
+                .then()
+                .statusCode(HttpStatus.CREATED.value())
+                .log().all()
+                .extract().response().body().asString();
+
+        JsonAssertions.assertThatJson(response)
+                .node("id")
+                .asNumber()
+                .isPositive();
+
+        JsonAssertions.assertThatJson(response)
+                .whenIgnoringPaths("id")
+                .isEqualTo(expectedResponse);
     }
 
 
