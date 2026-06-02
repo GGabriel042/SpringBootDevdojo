@@ -78,14 +78,17 @@ public class ProfileControllerRestAssuredIT extends IntegrationTestConfig {
     @DisplayName("GET v1/profiles returns empty list when nothing is not found")
     @Order(2)
     void findAll_ReturnsEmptyList_WhenNothingIsNotFound() {
-        var typeReference = new ParameterizedTypeReference<List<ProfileGetResponse>>() {
-        };
-        var responseEntity = testRestTemplate.exchange(URL, GET, null, typeReference);
 
-        assertThat(responseEntity).isNotNull();
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(responseEntity.getBody()).isNotNull().isEmpty();
+        var response = fileUtils.readResourceFile("profile/get-profiles-empty-list-200.json");
 
+        RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .when()
+                .get(URL)
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .body(Matchers.equalTo(response))
+                .log().all();
     }
 
 
