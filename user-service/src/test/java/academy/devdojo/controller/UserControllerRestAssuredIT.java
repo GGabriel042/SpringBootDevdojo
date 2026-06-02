@@ -251,23 +251,24 @@ public class UserControllerRestAssuredIT extends IntegrationTestConfig {
                 .log().all();
     }
 
-//    @Test
-//    @DisplayName("PUT v1/users throws NotFound when user is not found")
-//    @Order(10)
-//    void update_ThrowsNotFound_WhenUserIsNotFound() throws Exception {
-//        var request = fileUtils.readResourceFile("user/put-request-user-404.json");
-//        var response = fileUtils.readResourceFile("user/put-user-by-id-404.json");
-//
-//        mockMvc.perform(MockMvcRequestBuilders
-//                        .put(URL)
-//                        .content(request)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                )
-//                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(MockMvcResultMatchers.status().isNotFound())
-//                .andExpect(MockMvcResultMatchers.content().json(response));
-//    }
-//
+    @Test
+    @DisplayName("PUT v1/users throws NotFound when user is not found")
+    @Order(10)
+    void update_ThrowsNotFound_WhenUserIsNotFound() throws Exception {
+        var request = fileUtils.readResourceFile("user/put-request-user-404.json");
+        var expectedResponse = fileUtils.readResourceFile("user/put-user-by-id-404.json");
+
+        RestAssured.given()
+                .contentType(ContentType.JSON).accept(ContentType.JSON)
+                .when()
+                .body(request)
+                .put(URL)
+                .then()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .body(Matchers.equalTo(expectedResponse))
+                .log().all();
+    }
+
 //    @ParameterizedTest
 //    @MethodSource("postUserBadRequestSource")
 //    @DisplayName("POST v1/users returns bad request when fields are invalid")
