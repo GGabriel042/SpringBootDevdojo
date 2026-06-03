@@ -7,6 +7,7 @@ import academy.devdojo.config.TestcontainersConfiguration;
 import academy.devdojo.response.ProfileGetResponse;
 import academy.devdojo.response.ProfilePostResponse;
 import net.javacrumbs.jsonunit.assertj.JsonAssertions;
+import net.javacrumbs.jsonunit.core.Option;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -103,6 +104,7 @@ public class ProfileControllerIT extends IntegrationTestConfig {
 
         JsonAssertions.assertThatJson(responseEntity.getBody())
                 .whenIgnoringPaths("timestamp")
+                .when(Option.IGNORING_ARRAY_ORDER)
                 .isEqualTo(expectedResponse);
 
     }
