@@ -13,3 +13,7 @@ spring:
     properties:
       hibernate:
         globally_quoted_identifiers: true
+server:
+  error:
+    include-message: ALWAYS
+    include-binding-errors: ALWAYS

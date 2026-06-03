@@ -35,3 +35,5 @@ server:
       max: 20
   error:
     include-stacktrace: ON_PARAM
+    include-binding-errors: ALWAYS
+    include-message: ALWAYS
