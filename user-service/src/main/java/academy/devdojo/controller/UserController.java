@@ -74,6 +74,19 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Create users"
+            ,responses = {
+            @ApiResponse(description = "Save users in the database",
+                    responseCode = "201",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = UserPostResponse.class))
+            ),
+            @ApiResponse(description = "Bad Request",
+                    responseCode = "400",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = DefaultErrorMessage.class))
+            )
+    })
     public ResponseEntity<UserPostResponse> save(@RequestBody @Valid UserPostRequest request) {
 
         var user = mapper.toUser(request);
