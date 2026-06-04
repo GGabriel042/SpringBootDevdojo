@@ -29,6 +29,7 @@ logging:
   level:
     academy.devdojo: debug
     net.ttddyy.dsproxy.listener: debug
+    org.springframework.security: debug
 
 server:
   port: 8090
