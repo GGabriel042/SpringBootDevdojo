@@ -1,59 +1,7 @@
 {
-  "timestamp": "2024-10-24T09:07:53.512+00:00",
+  "timestamp": "2024-10-28T13:29:40.115432+01:00",
   "status": 400,
   "error": "Bad Request",
-  "message": "Validation failed for object='profilePostRequest'. Error count: 2",
-  "errors": [
-    {
-      "codes": [
-        "NotNull.profilePostRequest.name",
-        "NotNull.name",
-        "NotNull.java.lang.String",
-        "NotNull"
-      ],
-      "arguments": [
-        {
-          "codes": [
-            "profilePostRequest.name",
-            "name"
-          ],
-          "arguments": null,
-          "defaultMessage": "name",
-          "code": "name"
-        }
-      ],
-      "defaultMessage": "The field 'name' is required",
-      "objectName": "profilePostRequest",
-      "field": "name",
-      "rejectedValue": null,
-      "bindingFailure": false,
-      "code": "NotNull"
-    },
-    {
-      "codes": [
-        "NotNull.profilePostRequest.description",
-        "NotNull.description",
-        "NotNull.java.lang.String",
-        "NotNull"
-      ],
-      "arguments": [
-        {
-          "codes": [
-            "profilePostRequest.description",
-            "description"
-          ],
-          "arguments": null,
-          "defaultMessage": "description",
-          "code": "description"
-        }
-      ],
-      "defaultMessage": "The field 'description' is required",
-      "objectName": "profilePostRequest",
-      "field": "description",
-      "rejectedValue": null,
-      "bindingFailure": false,
-      "code": "NotNull"
-    }
-  ],
+  "message": "The field 'description' is required, The field 'name' is required",
   "path": "/v1/profiles"
 }
