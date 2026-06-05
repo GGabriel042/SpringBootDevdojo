@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class UserControllerRestAssuredIT extends IntegrationTestConfig {
+public class UserControllerRestAssuredIT /*extends IntegrationTestConfig*/ {
     private static final String URL = "/v1/users";
     @Autowired
     private UserUtils userUtils;
