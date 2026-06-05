@@ -3,7 +3,7 @@ package academy.devdojo.controller;
 import academy.devdojo.commons.FileUtils;
 import academy.devdojo.commons.ProfileUtils;
 import academy.devdojo.config.IntegrationTestConfig;
-import academy.devdojo.config.TestcontainersConfiguration;
+import academy.devdojo.config.TestRestTemplateConfig;
 import academy.devdojo.response.ProfileGetResponse;
 import academy.devdojo.response.ProfilePostResponse;
 import net.javacrumbs.jsonunit.assertj.JsonAssertions;
@@ -15,7 +15,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -30,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = TestRestTemplateConfig.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ProfileControllerIT extends IntegrationTestConfig {
     private static final String URL = "/v1/profiles";
@@ -47,7 +46,8 @@ public class ProfileControllerIT extends IntegrationTestConfig {
     @Sql(value = "/sql/profile/clean_profiles.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Order(1)
     void findAll_ReturnsAllProfiles_WhenSuccessful() throws Exception {
-        var typeReference = new ParameterizedTypeReference<List<ProfileGetResponse>>(){};
+        var typeReference = new ParameterizedTypeReference<List<ProfileGetResponse>>() {
+        };
         var responseEntity = testRestTemplate.exchange(URL, GET, null, typeReference);
 
         assertThat(responseEntity).isNotNull();
@@ -63,7 +63,8 @@ public class ProfileControllerIT extends IntegrationTestConfig {
     @DisplayName("GET v1/profiles returns empty list when nothing is not found")
     @Order(2)
     void findAll_ReturnsEmptyList_WhenNothingIsNotFound() {
-        var typeReference = new ParameterizedTypeReference<List<ProfileGetResponse>>(){};
+        var typeReference = new ParameterizedTypeReference<List<ProfileGetResponse>>() {
+        };
         var responseEntity = testRestTemplate.exchange(URL, GET, null, typeReference);
 
         assertThat(responseEntity).isNotNull();
@@ -76,7 +77,7 @@ public class ProfileControllerIT extends IntegrationTestConfig {
     @Test
     @DisplayName("POST v1/profiles creates an profile")
     @Order(3)
-    void save_CreatesProfile_WhenSuccessful() throws Exception{
+    void save_CreatesProfile_WhenSuccessful() throws Exception {
         var request = fileUtils.readResourceFile("profile/post-request-profile-200.json");
         var profileEntity = buildHttpEntity(request);
         var responseEntity = testRestTemplate.exchange(URL, POST, profileEntity, ProfilePostResponse.class);
@@ -116,7 +117,6 @@ public class ProfileControllerIT extends IntegrationTestConfig {
                 Arguments.of("post-request-profile-blank-fields-400.json", "post-response-profile-blank-fields-400.json")
         );
     }
-
 
 
     private static HttpEntity<String> buildHttpEntity(String request) {

@@ -46,7 +46,7 @@ public class UserController {
             content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     array = @ArraySchema(schema = @Schema(implementation = UserGetResponse.class))))
     })
-    @PreAuthorize("hasAuthority(ADMIN)")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UserGetResponse>> findUser(@RequestParam (required = false) String firstName) {
 
         var users = service.findAll(firstName);
