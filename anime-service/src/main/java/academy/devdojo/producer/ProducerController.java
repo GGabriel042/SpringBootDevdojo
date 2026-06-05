@@ -1,5 +1,10 @@
 package academy.devdojo.producer;
 
+import academy.devdojo.api.ProducerControllerApi;
+import academy.devdojo.dto.ProducerGetResponse;
+import academy.devdojo.dto.ProducerPostRequest;
+import academy.devdojo.dto.ProducerPostResponse;
+import academy.devdojo.dto.ProducerPutRequest;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +20,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @SecurityRequirement(name = "basicAuth")
-public class ProducerController {
+public class ProducerController implements ProducerControllerApi {
 
     private final ProducerMapper mapper;
     private final ProducerService service;
@@ -42,18 +47,18 @@ public class ProducerController {
     }
 
     @PostMapping
-    public ResponseEntity<ProducerGetResponse> saveProducer(@RequestBody @Valid ProducerPostRequest producerPostRequest) {
+    public ResponseEntity<ProducerPostResponse> saveProducer(@RequestBody @Valid ProducerPostRequest producerPostRequest) {
 
         var producer = mapper.toProducer(producerPostRequest);
         var producerSaved = service.save(producer);
-        var producerGetResponse = mapper.toProducerGetResponse(producerSaved);
+        var producerPostResponse = mapper.toProducerPostResponse(producerSaved);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(producerGetResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(producerPostResponse);
     }
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProducer(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteProducerById(@PathVariable Long id) {
         log.debug("Request to delete producer by id {}", id);
 
         service.delete(id);
