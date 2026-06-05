@@ -21,7 +21,7 @@ public class ProducerController {
     private final ProducerService service;
 
     @GetMapping
-    public ResponseEntity<List<ProducerGetResponse>> findAll(@RequestParam(required = false) String name) {
+    public ResponseEntity<List<ProducerGetResponse>> findAllProducers(@RequestParam(required = false) String name) {
         log.debug("Request received to list all producers, param name {}", name);
 
         var producers = service.findAll(name);
@@ -31,7 +31,7 @@ public class ProducerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProducerGetResponse> findById(@PathVariable Long id) {
+    public ResponseEntity<ProducerGetResponse> findProducerById(@PathVariable Long id) {
         log.debug("Request to find producer by id {}", id);
 
         var producer = service.findByIdOrThrowNotFound(id);

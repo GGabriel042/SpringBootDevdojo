@@ -26,7 +26,7 @@ public class AnimeController {
 
 
     @GetMapping
-    public ResponseEntity<List<AnimeGetResponse>> findAll(@RequestParam(required = false) String name) {
+    public ResponseEntity<List<AnimeGetResponse>> findAllAnimes(@RequestParam(required = false) String name) {
 
         log.debug("Request received to find all animes, param name {}", name);
 
@@ -37,7 +37,7 @@ public class AnimeController {
     }
 
     @GetMapping("/paginated")
-    public ResponseEntity<Page<AnimeGetResponse>> findAllPaginated(@ParameterObject Pageable pageable) {
+    public ResponseEntity<Page<AnimeGetResponse>> findAllAnimesPaginated(@ParameterObject Pageable pageable) {
 
         log.debug("Request received to find all animes paginated");
 
@@ -46,7 +46,7 @@ public class AnimeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AnimeGetResponse> findById(@PathVariable Long id) {
+    public ResponseEntity<AnimeGetResponse> findAnimeById(@PathVariable Long id) {
 
         log.debug("Request to find anime by id {}", id);
 
@@ -87,7 +87,5 @@ public class AnimeController {
 
         return ResponseEntity.noContent().build();
     }
-
-
 
 }
