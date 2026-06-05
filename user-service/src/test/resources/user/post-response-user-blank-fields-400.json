@@ -2,6 +2,6 @@
   "timestamp": "2024-10-28T13:28:19.416317+01:00",
   "status": 400,
   "error": "Bad Request",
-  "message": "The e-mail is not valid, The field 'email' is required, The field 'firstName' is required, The field 'lastName' is required",
+  "message": "The e-mail is not valid, The field 'email' is required, The field 'firstName' is required, The field 'lastName' is required, The field 'password' is required",
   "path": "/v1/users"
 }
