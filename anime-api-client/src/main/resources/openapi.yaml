@@ -1,9 +1,9 @@
 openapi: 3.0.1
 info:
-  title: Devdojo anime service Api
-  version: '1'
+  title: DevDojo Anime Service API
+  version: v1
 servers:
-  - url: 'http://localhost:8080'
+  - url: http://localhost:8080
     description: Generated server url
 paths:
   /v1/producers:
@@ -47,6 +47,11 @@ paths:
       tags:
         - producer-controller
       operationId: saveProducer
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -57,9 +62,9 @@ paths:
         '200':
           description: OK
           content:
-            '*/*':
+            application/json:
               schema:
-                $ref: '#/components/schemas/ProducerGetResponse'
+                $ref: '#/components/schemas/ProducerPostResponse'
       security:
         - basicAuth: []
   /v1/animes:
@@ -115,10 +120,10 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/AnimeGetResponse'
+                $ref: '#/components/schemas/AnimePostResponse'
       security:
         - basicAuth: []
-  '/v1/producers/{id}':
+  /v1/producers/{id}:
     get:
       tags:
         - producer-controller
@@ -142,7 +147,7 @@ paths:
     delete:
       tags:
         - producer-controller
-      operationId: deleteProducer
+      operationId: deleteProducerById
       parameters:
         - name: id
           in: path
@@ -155,11 +160,11 @@ paths:
           description: OK
       security:
         - basicAuth: []
-  '/v1/animes/{id}':
+  /v1/animes/{id}:
     get:
       tags:
         - anime-controller
-      operationId: findAnimeById
+      operationId: findByAnimeId
       parameters:
         - name: id
           in: path
@@ -179,7 +184,7 @@ paths:
     delete:
       tags:
         - anime-controller
-      operationId: deleteAnime
+      operationId: deleteAnimeById
       parameters:
         - name: id
           in: path
@@ -197,6 +202,7 @@ paths:
       tags:
         - anime-controller
       operationId: findAllAnimesPaginated
+      x-spring-paginated: true
       parameters:
         - name: page
           in: query
@@ -216,9 +222,7 @@ paths:
             default: 20
         - name: sort
           in: query
-          description: >-
-            Sorting criteria in the format: property,(asc|desc). Default sort
-            order is ascending. Multiple sort criteria are supported.
+          description: 'Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.'
           required: false
           schema:
             type: array
@@ -255,6 +259,7 @@ components:
         id:
           type: integer
           format: int64
+          x-field-extra-annotation: "@jakarta.validation.constraints.NotNull(message=\"The field 'id' cannot be null\")"
         name:
           type: string
           x-field-extra-annotation: "@jakarta.validation.constraints.NotBlank(message=\"The field 'name' is required\")"
@@ -263,6 +268,30 @@ components:
         - name
       type: object
       properties:
+        name:
+          type: string
+    ProducerPostResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+    AnimePostRequest:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+          x-field-extra-annotation: "@jakarta.validation.constraints.NotBlank(message=\"The field 'name' is required\")"
+    AnimePostResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
         name:
           type: string
     ProducerGetResponse:
@@ -276,14 +305,6 @@ components:
         createdAt:
           type: string
           format: date-time
-    AnimePostRequest:
-      required:
-        - name
-      type: object
-      properties:
-        name:
-          type: string
-          x-field-extra-annotation: "@jakarta.validation.constraints.NotBlank(message=\"The field 'name' is required\")"
     AnimeGetResponse:
       type: object
       properties:
@@ -297,12 +318,16 @@ components:
     PageAnimeGetResponse:
       type: object
       properties:
-        totalElements:
-          type: integer
-          format: int64
         totalPages:
           type: integer
           format: int32
+        totalElements:
+          type: integer
+          format: int64
+        first:
+          type: boolean
+        last:
+          type: boolean
         size:
           type: integer
           format: int32
@@ -317,15 +342,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SortObject'
-        first:
-          type: boolean
-        last:
-          type: boolean
+        pageable:
+          $ref: '#/components/schemas/PageableObject'
         numberOfElements:
           type: integer
           format: int32
-        pageable:
-          $ref: '#/components/schemas/PageableObject'
         empty:
           type: boolean
     PageableObject:
@@ -340,14 +361,14 @@ components:
             $ref: '#/components/schemas/SortObject'
         paged:
           type: boolean
-        unpaged:
-          type: boolean
         pageNumber:
           type: integer
           format: int32
         pageSize:
           type: integer
           format: int32
+        unpaged:
+          type: boolean
     SortObject:
       type: object
       properties:

@@ -1,8 +1,12 @@
 package academy.devdojo.anime;
 
-import academy.devdojo.domain.Anime;
+import academy.devdojo.api.AnimeControllerApi;
+import academy.devdojo.dto.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
@@ -19,7 +23,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @SecurityRequirement(name = "basicAuth")
-public class AnimeController {
+public class AnimeController implements AnimeControllerApi {
 
     private final AnimeMapper mapper;
     private final AnimeService service;
@@ -36,17 +40,26 @@ public class AnimeController {
         return ResponseEntity.ok(animeGetResponseList);
     }
 
+    @Override
     @GetMapping("/paginated")
-    public ResponseEntity<Page<AnimeGetResponse>> findAllAnimesPaginated(@ParameterObject Pageable pageable) {
-
+    public ResponseEntity<PageAnimeGetResponse> findAllAnimesPaginated(
+            @Min(0) @Parameter(name = "page", description = "Zero-based page index (0..N)", in = ParameterIn.QUERY) @Valid @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+            @Min(1) @Parameter(name = "size", description = "The size of the page to be returned", in = ParameterIn.QUERY) @Valid @RequestParam(value = "size", required = false, defaultValue = "20") Integer size,
+            @Parameter(name = "sort", description = "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.", in = ParameterIn.QUERY) @Valid @RequestParam(value = "sort", required = false) List<String> sort,
+            @ParameterObject final Pageable pageable
+    ) {
         log.debug("Request received to find all animes paginated");
 
-        var pageAnimeGetResponse = service.findAllPaginated(pageable).map(mapper::toAnimeGetResponse);
+        var jpaPageAnimeGetResponse = service.findAllPaginated(pageable);
+
+        var pageAnimeGetResponse = mapper.toPageAnimeGetResponse(jpaPageAnimeGetResponse);
+
         return ResponseEntity.ok(pageAnimeGetResponse);
     }
 
+
     @GetMapping("/{id}")
-    public ResponseEntity<AnimeGetResponse> findAnimeById(@PathVariable Long id) {
+    public ResponseEntity<AnimeGetResponse> findByAnimeId(@PathVariable Long id) {
 
         log.debug("Request to find anime by id {}", id);
 
@@ -57,19 +70,19 @@ public class AnimeController {
     }
 
     @PostMapping
-    public ResponseEntity<AnimeGetResponse> saveAnime(@RequestBody @Valid AnimePostRequest request) {
+    public ResponseEntity<AnimePostResponse> saveAnime(@RequestBody @Valid AnimePostRequest request) {
         log.debug("Request to save anime : {}", request);
 
         var anime = mapper.toAnime(request);
         var animeSaved = service.save(anime);
-        var animeResponse = mapper.toAnimeGetResponse(animeSaved);
+        var animeGetResponse = mapper.toAnimePostResponse(animeSaved);
 
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(animeResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(animeGetResponse);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAnime(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteAnimeById(@PathVariable Long id) {
         log.debug("Request to delete anime by id {}", id);
 
         service.delete(id);
