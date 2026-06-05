@@ -27,6 +27,11 @@
         <mysql-connector-j.version>9.0.0</mysql-connector-j.version>
         <json-unit-assertj.version>3.4.1</json-unit-assertj.version>
         <rest-assured.version>5.5.0</rest-assured.version>
+        <jib-maven-plugin.version>3.4.4</jib-maven-plugin.version>
+        <jib-maven-plugin.image>eclipse-temurin:21-jre</jib-maven-plugin.image>
+        <docker.repo.url>gabrielgonzaga042</docker.repo.url>
+        <docker.repo.project>${artifactId}</docker.repo.project>
+        <docker.image.name>${docker.repo.url}/${docker.repo.project}</docker.image.name>
     </properties>
 
     <dependencyManagement>
@@ -122,6 +127,25 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib-maven-plugin.version}</version>
+                <configuration>
+                    <from>
+                        <image>${jib-maven-plugin.image}</image>
+                    </from>
+                    <to>
+                        <image>${docker.image.name}</image>
+                        <tags>
+                            <tag>${project.version}</tag>
+                        </tags>
+                    </to>
+                    <container>
+                        <format>OCI</format>
+                    </container>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
