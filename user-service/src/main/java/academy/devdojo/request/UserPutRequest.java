@@ -29,4 +29,5 @@ public class UserPutRequest {
     @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,10}$", message = "The e-mail is not valid")
     @Schema(description = "User's email. Must be unique", example = "EdwardElric@Fullmetal.com")
     private String email;
+    private String password;
 }
