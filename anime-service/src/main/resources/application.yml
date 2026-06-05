@@ -35,3 +35,10 @@ server:
   error:
     include-stacktrace: ON_PARAM
 
+management:
+  server:
+    port: 8989
+  endpoints:
+    web:
+      exposure:
+        include: "*"
