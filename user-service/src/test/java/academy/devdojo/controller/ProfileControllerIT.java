@@ -32,7 +32,6 @@ import static org.springframework.http.HttpMethod.POST;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Import(TestcontainersConfiguration.class)
 public class ProfileControllerIT extends IntegrationTestConfig {
     private static final String URL = "/v1/profiles";
     @Autowired
