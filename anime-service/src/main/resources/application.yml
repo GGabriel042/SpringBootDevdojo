@@ -1,10 +1,6 @@
 spring:
-  config:
-    import:
-      - optional:classpath:.env[.properties]
   application:
-    name:
-      anime-service
+    name: anime-service
   datasource:
     url: jdbc:mysql://localhost:3306/anime_service?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: ${ENV_ROOT_USER:root}
@@ -12,28 +8,25 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
   threads:
     virtual:
       enabled: true
-
-  output:
-    ansi:
-      enabled: ALWAYS
+  flyway:
+    enabled: true
 
 logging:
-    level:
-      academy.devdojo: debug
-
+  level:
+    academy.devdojo: debug
 server:
   port: 8080
   servlet:
     context-path: /
+  error:
+    include-stacktrace: on_param
   tomcat:
     threads:
       max: 20
-  error:
-    include-stacktrace: ON_PARAM
 
 management:
   server:
