@@ -1,10 +1,7 @@
 spring:
   sql:
     init:
-      mode: ALWAYS
-  datasource:
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL;DATABASE_TO_LOWER=true
-    username: test
+      mode: always
   jpa:
     defer-datasource-initialization: true
     show-sql: true
@@ -15,5 +12,9 @@ spring:
         globally_quoted_identifiers: true
 server:
   error:
-    include-message: ALWAYS
-    include-binding-errors: ALWAYS
+    include-message: always
+    include-binding-errors: always
+
+brasil-api:
+  base-url: https://localhost:8085/api
+  cep-uri: /cep/v1/{cep}
