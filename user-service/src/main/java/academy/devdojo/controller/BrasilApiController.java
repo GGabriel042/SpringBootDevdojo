@@ -22,7 +22,7 @@ public class BrasilApiController {
     private final BrasilApiService service;
 
     @GetMapping("/cep")
-    public ResponseEntity<CepGetResponse> csrfToken(@PathVariable String cep) {
+    public ResponseEntity<CepGetResponse> findCep(@PathVariable String cep) {
         log.info("request received to find cep");
 
         var cepGetResponse = service.findCep(cep);
