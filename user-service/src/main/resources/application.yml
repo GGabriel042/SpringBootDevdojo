@@ -1,21 +1,12 @@
 spring:
-#  security:
-#    user:
-#      name: user
-#      password: devdojo
+  #  security:
+  #    user:
+  #      name: user
+  #      password: devdojo
   config:
     import: optional:classpath:.env[.properties]
   application:
-    name:
-      user-service
-  threads:
-    virtual:
-      enabled: true
-
-  output:
-    ansi:
-      enabled: ALWAYS
-
+    name: user-service
   datasource:
     url: jdbc:mysql://localhost:3306/user_service?useTimezone=true&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: ${ENV_ROOT_USER:root}
@@ -24,24 +15,29 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+  threads:
+    virtual:
+      enabled: true
 
 logging:
   level:
     academy.devdojo: debug
-    net.ttddyy.dsproxy.listener: debug
+    #    org.hibernate.orm.jdbc.bind: trace
+    #    net.ttddyy.dsproxy.listener: debug
     org.springframework.security: debug
 
 server:
   port: 8090
   servlet:
     context-path: /
+  error:
+    include-stacktrace: on_param
+    include-binding-errors: always
+    include-message: always
   tomcat:
     threads:
       max: 20
-  error:
-    include-stacktrace: ON_PARAM
-    include-binding-errors: ALWAYS
-    include-message: ALWAYS
+
+brasil-api:
+  base-url: ${BRASIL_API_BASE_URL:https://brasilapi.com.br/api}
+  cep-uri: ${BRASIL_API_URI:/cep/v1/{cep}}
