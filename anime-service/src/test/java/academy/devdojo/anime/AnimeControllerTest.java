@@ -44,7 +44,7 @@ class AnimeControllerTest {
     private List<Anime> animeList;
     @Autowired
     private ResourceLoader resourceLoader;
-    @InjectMocks
+    @Autowired
     private AnimeUtils animeUtils;
     private static final String url = "/v1/animes";
     @Autowired
@@ -167,7 +167,6 @@ class AnimeControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                         .post(url)
                         .content(request)
-                        .header("x-api-key", "v1")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
@@ -249,7 +248,6 @@ class AnimeControllerTest {
         var mvcResult = mockMvc.perform(MockMvcRequestBuilders
                         .post(url)
                         .content(request)
-                        .header("x-api-key", "v1")
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(MockMvcResultHandlers.print())
