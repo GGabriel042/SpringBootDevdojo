@@ -6,7 +6,6 @@ import academy.devdojo.domain.Profile;
 import academy.devdojo.repository.ProfileRepository;
 import academy.devdojo.repository.UserProfileRepository;
 import academy.devdojo.repository.UserRepository;
-import academy.devdojo.service.ProfileService;
 import academy.devdojo.service.UserProfileService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -17,10 +16,10 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -38,18 +37,18 @@ class ProfileControllerTest {
     private static final String URL = "/v1/profiles";
     @Autowired
     private MockMvc mockMvc;
-    @MockBean
+    @MockitoBean
     private ProfileRepository repository;
-    @MockBean
+    @MockitoBean
     private UserRepository userRepository;
     private List<Profile> profileList;
     @Autowired
     private FileUtils fileUtils;
     @Autowired
     private ProfileUtils profileUtils;
-    @MockBean
+    @MockitoBean
     private UserProfileRepository userProfileRepository;
-    @MockBean
+    @MockitoBean
     private UserProfileService userProfileService;
 
     @BeforeEach
