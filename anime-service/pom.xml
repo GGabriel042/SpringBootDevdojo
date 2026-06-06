@@ -9,16 +9,14 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-
 	<artifactId>anime-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>Anime Service</name>
 	<description>Projeto Exemplo do curso Spring Boot Direto Das Trincheiras</description>
+
 	<properties>
 		<anime-api-client.version>1.0-SNAPSHOT</anime-api-client.version>
-
 	</properties>
-
 
 	<dependencies>
 		<dependency>
@@ -60,6 +58,4 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
-
 </project>

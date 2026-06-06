@@ -29,10 +29,12 @@
         <rest-assured.version>5.5.0</rest-assured.version>
         <jib-maven-plugin.version>3.4.4</jib-maven-plugin.version>
         <jib-maven-plugin.image>eclipse-temurin:21-jre</jib-maven-plugin.image>
-        <docker.repo.url>gabrielgonzaga042</docker.repo.url>
+        <docker.repo.url>williamsuane</docker.repo.url>
         <docker.repo.project>${artifactId}</docker.repo.project>
         <docker.image.name>${docker.repo.url}/${docker.repo.project}</docker.image.name>
         <spring-cloud.version>2023.0.0</spring-cloud.version>
+        <checkstyle-maven-plugin.version>3.6.0</checkstyle-maven-plugin.version>
+        <checkstyle.version>10.20.1</checkstyle.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -201,6 +203,37 @@
                         <!-- other annotation processors -->
                     </annotationProcessorPaths>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>${checkstyle-maven-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${checkstyle.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <configLocation>checkstyle.xml</configLocation>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                    <linkXRef>false</linkXRef>
+                    <failsOnError>true</failsOnError>
+                    <failOnViolation>true</failOnViolation>
+                    <includeTestSourceDirectory>false</includeTestSourceDirectory>
+                    <includes>**/*.java</includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>check-style</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
